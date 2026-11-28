@@ -23,7 +23,7 @@
 
 
 <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>MILAN</title>
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1054,7 +1054,7 @@ pre{max-width:100%;overflow-x:auto}
 }
 </style>
 <script src="/login-fix.js?v=20261127e"></script>
-</head>
+<style id="milan-smooth">html{-webkit-text-size-adjust:100%;overscroll-behavior-y:none}body{-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}button,a,[role=button]{touch-action:manipulation}img,video{max-width:100%;height:auto}@media(max-width:768px){*{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}}@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}</style></head>
 <body class="map">
 <div class="app">
 <div id="map-bg" aria-hidden="true">
@@ -1066,7 +1066,7 @@ pre{max-width:100%;overflow-x:auto}
 <header class="topbar">
   
   <div class="brand">
-    <div class="brand-logo" role="link" tabindex="0" title="Home"><img class="brand-logo-img" src="/assets/milan-logo-circle.png" alt="Milan Home"></div>
+    <div class="brand-logo" role="link" tabindex="0" title="Home"><img loading="lazy" decoding="async" class="brand-logo-img" src="/assets/milan-logo-circle.png" alt="Milan Home"></div>
     <div class="brand-text"><div class="brand-text-inner"><div><strong>Milan</strong><span>Your Space. Your People.</span></div></div></div>
   </div>
   <div class="search"><input id="globalSearch" type="search" placeholder="Search people, posts, tags..."></div>
@@ -1074,7 +1074,7 @@ pre{max-width:100%;overflow-x:auto}
   <button id="milanHamburger" type="button" class="milan-hamburger" aria-label="Menu">☰</button>
 </header>
 <div id="milanMobileDrawer" class="milan-mobile-drawer">
-  <div class="milan-drawer-head"><img src="/assets/milan-logo-circle.png" alt="MILAN" style="width:36px;height:36px;border-radius:10px;"><strong>MILAN</strong><button id="milanDrawerClose" type="button">✕</button></div>
+  <div class="milan-drawer-head"><img loading="lazy" decoding="async" src="/assets/milan-logo-circle.png" alt="MILAN" style="width:36px;height:36px;border-radius:10px;"><strong>MILAN</strong><button id="milanDrawerClose" type="button">✕</button></div>
   <style id="milan-drawer-profile-css">
 #milanMobileDrawer .mdp{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:10px;padding:14px 4px 14px;text-align:center;border-bottom:1px solid rgba(255,255,255,.12)}
 html body #milanMobileDrawer .mdp-av{position:relative;display:grid!important;place-items:center!important;flex:0 0 auto;box-sizing:border-box!important;width:104px!important;height:104px!important;min-width:104px!important;min-height:104px!important;margin:0!important;padding:3px!important;border-radius:50%!important;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6)!important;cursor:pointer;box-shadow:0 8px 24px rgba(99,102,241,.35)}
@@ -1235,7 +1235,7 @@ html body #milanMobileDrawer .milan-drawer-nav button:active,html body #milanMob
     <label class="milan-avatar-upload" for="editProfilePhoto">
       <div class="avatar" id="myAvatar">M</div><span class="milan-avatar-upload-icon">📷</span>
       <input id="editProfilePhoto" type="file" accept="image/*" hidden>
-      <img id="editProfilePhotoPreview" alt="Profile photo">
+      <img loading="lazy" decoding="async" id="editProfilePhotoPreview" alt="Profile photo">
     </label>
     <h2 id="myName"></h2><p id="myEmail"></p>
     <span id="myDid" class="milan-data-bridge" aria-hidden="true"></span>
