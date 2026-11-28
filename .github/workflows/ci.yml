@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: JavaScript syntax check
+        run: find backend frontend -name "*.js" -not -path "*/node_modules/*" -print0 | xargs -0 -n1 node --check
+      - name: Required files present
+        run: test -f frontend/app.html && test -f frontend/manifest.json && test -f frontend/sw.js && test -f LICENSE
