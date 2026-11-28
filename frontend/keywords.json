@@ -1,0 +1,234 @@
+{
+  "name": "MILAN",
+  "url": "https://milanlife.in",
+  "description": "Curated MILAN topic index for search, AI retrieval and semantic discovery.",
+  "updatedAt": "2026-10-07T00:00:00.000Z",
+  "totalKeywords": 141,
+  "clusters": [
+    {
+      "id": "milan-featured",
+      "title": "Core MILAN Topics",
+      "keywords": [
+        "MILAN",
+        "Milan App",
+        "MILAN founder",
+        "MILAN privacy-first social network",
+        "MILAN decentralized social media",
+        "Your Space. Your People.",
+        "MILAN user-owned data",
+        "MILAN Web5",
+        "MILAN DWN",
+        "MILAN DID",
+        "MILAN private messaging",
+        "MILAN free music"
+      ]
+    },
+    {
+      "id": "social-network",
+      "title": "Decentralized Social Network",
+      "keywords": [
+        "decentralized social network",
+        "decentralized social app",
+        "privacy-first social network",
+        "user-owned social network",
+        "decentralized social media platform",
+        "Web5 social network",
+        "DWN social network",
+        "DID social network",
+        "private decentralized social network",
+        "made in India decentralized social network",
+        "decentralized social network where you own your data",
+        "alternative social network with data ownership"
+      ]
+    },
+    {
+      "id": "social-media",
+      "title": "Decentralized Social Media",
+      "keywords": [
+        "decentralized social media",
+        "decentralized social media India",
+        "privacy-first social media",
+        "social media data ownership",
+        "no ads social media",
+        "no tracking social media",
+        "social media without data selling",
+        "consent-based social media",
+        "self-sovereign social media",
+        "privacy-friendly social media app",
+        "decentralized social media alternative",
+        "user-controlled social media"
+      ]
+    },
+    {
+      "id": "messaging",
+      "title": "Private & Encrypted Messaging",
+      "keywords": [
+        "private messaging app",
+        "private social messaging",
+        "encrypted messaging",
+        "privacy-first messaging",
+        "DID-based messaging",
+        "consent-based messaging",
+        "private one-to-one messaging",
+        "secure social messaging",
+        "decentralized messaging",
+        "friend-only messaging"
+      ]
+    },
+    {
+      "id": "communication-mesh",
+      "title": "Peer-to-Peer Communication",
+      "keywords": [
+        "peer-to-peer communication",
+        "peer-to-peer social network",
+        "decentralized communication",
+        "direct social communication",
+        "DID-based communication",
+        "privacy-first communication network",
+        "distributed communication",
+        "secure peer-to-peer messaging",
+        "decentralized communication network"
+      ]
+    },
+    {
+      "id": "identity-node",
+      "title": "Self-Sovereign Identity & DID",
+      "keywords": [
+        "self-sovereign identity",
+        "decentralized identifier",
+        "DID",
+        "DID social network",
+        "portable digital identity",
+        "did:key",
+        "Ed25519 identity",
+        "user-controlled identity",
+        "decentralized identity for social media",
+        "self-sovereign social identity"
+      ]
+    },
+    {
+      "id": "data-hub",
+      "title": "User-Owned Data",
+      "keywords": [
+        "user-owned data",
+        "data ownership social media",
+        "own your data",
+        "personal data ownership",
+        "user-controlled social data",
+        "self-sovereign data",
+        "data privacy social media",
+        "consent-based data sharing",
+        "private social data",
+        "social data ownership"
+      ]
+    },
+    {
+      "id": "storage-node",
+      "title": "Decentralized Storage",
+      "keywords": [
+        "decentralized storage",
+        "user-owned storage",
+        "personal data node",
+        "private data storage",
+        "DWN storage",
+        "isolated user storage",
+        "decentralized data storage",
+        "privacy-first cloud storage",
+        "portable social data",
+        "self-owned data storage"
+      ]
+    },
+    {
+      "id": "web-node",
+      "title": "Decentralized Web Nodes (DWN)",
+      "keywords": [
+        "Decentralized Web Node",
+        "DWN",
+        "DWN social media",
+        "DWN explained",
+        "DWN and DID",
+        "DWN data ownership",
+        "user-owned DWN",
+        "personal DWN",
+        "DWN social network architecture",
+        "Web5 DWN",
+        "Decentralized Web Node per user"
+      ]
+    },
+    {
+      "id": "ecosystem",
+      "title": "Web5 & Decentralized Ecosystem",
+      "keywords": [
+        "Web5",
+        "Web5 social network",
+        "Web5 explained",
+        "Web5 ecosystem",
+        "Web5 social app",
+        "Web2 vs Web3 vs Web5",
+        "decentralized web",
+        "people-first web",
+        "Web5 identity",
+        "Web5 data ownership"
+      ]
+    },
+    {
+      "id": "protocol",
+      "title": "Open Decentralized Protocol",
+      "keywords": [
+        "decentralized protocol",
+        "open social protocol",
+        "DWN protocol",
+        "DID protocol",
+        "decentralized identity protocol",
+        "consent-based sharing protocol",
+        "portable social data protocol",
+        "open decentralized social protocol"
+      ]
+    },
+    {
+      "id": "platform",
+      "title": "Privacy-First Platform",
+      "keywords": [
+        "privacy-first platform",
+        "decentralized platform",
+        "user-owned platform",
+        "no ads platform",
+        "no tracking platform",
+        "social platform with data ownership",
+        "privacy-friendly social platform",
+        "Web5 platform"
+      ]
+    },
+    {
+      "id": "network",
+      "title": "Distributed Network",
+      "keywords": [
+        "distributed social network",
+        "decentralized network",
+        "peer-to-peer network",
+        "user-controlled network",
+        "privacy-first network",
+        "Web5 network",
+        "distributed identity network",
+        "distributed social platform"
+      ]
+    },
+    {
+      "id": "application",
+      "title": "Decentralized Applications & Apps",
+      "keywords": [
+        "decentralized app",
+        "decentralized social app",
+        "privacy-first social app",
+        "MILAN app",
+        "Web5 app",
+        "DID social app",
+        "DWN social app",
+        "private social network app",
+        "decentralized messaging app",
+        "free music app",
+        "privacy-friendly music player"
+      ]
+    }
+  ]
+}

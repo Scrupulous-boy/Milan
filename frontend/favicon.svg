@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="milan-title">
+  <title id="milan-title">MILAN</title>
+  <defs>
+    <linearGradient id="milan-brand" x1="72" y1="80" x2="438" y2="432" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffb20f"/>
+      <stop offset=".52" stop-color="#df46c8"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <rect x="12" y="12" width="488" height="488" rx="136" fill="#050e2b"/>
+  <circle cx="256" cy="256" r="190" fill="none" stroke="#ffffff" stroke-opacity=".09" stroke-width="8"/>
+  <path d="M112 360V151L256 292 400 151V360" fill="none" stroke="url(#milan-brand)" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="256" cy="407" r="13" fill="#ffb20f"/>
+</svg>

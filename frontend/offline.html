@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>You're offline — MILAN</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#eaeefb;
+    background:radial-gradient(1100px 600px at 80% -10%,rgba(217,70,239,.14),transparent 58%),
+      radial-gradient(900px 500px at 0 0,rgba(245,158,11,.09),transparent 55%),#070d1f;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:24px env(safe-area-inset-right) 24px env(safe-area-inset-left)}
+  .box{max-width:420px}
+  .logo{width:64px;height:64px;border-radius:18px;margin:0 auto 22px;display:block}
+  h1{font-size:1.6rem;margin-bottom:10px;
+    background:linear-gradient(135deg,#fbbf24,#f59e0b 35%,#e879f9 80%,#d946ef);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  p{color:#c3cce4;line-height:1.65;margin-bottom:22px}
+  button{font:inherit;font-weight:800;cursor:pointer;border:0;
+    background:linear-gradient(135deg,#f59e0b,#fbbf24 50%,#d946ef);color:#0a0f22;
+    padding:14px 30px;border-radius:14px;min-height:48px;width:100%;max-width:260px}
+  button:active{filter:brightness(.95)}
+  small{display:block;margin-top:18px;color:#8ba4d4}
+</style>
+<meta name="robots" content="noindex,follow,max-image-preview:large">
+  
+
+  <!-- MILAN cross-browser favicon and app identity -->
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png?v=20261108-brand1">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261108-brand1" sizes="any">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20261108-brand1" sizes="any">
+  <link rel="shortcut icon" href="/favicon.ico?v=20261108-brand1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20261108-brand1">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=20261108-brand1" color="#050e2b">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#050e2b">
+  <meta name="application-name" content="MILAN">
+  <meta name="apple-mobile-web-app-title" content="MILAN">
+  <meta name="msapplication-TileColor" content="#050e2b">
+  <meta name="msapplication-config" content="/browserconfig.xml?v=20261108-brand1">
+<link rel="stylesheet" href="/milan.css?v=20261127"><style id="mobile-fix">
+html:root:root{position:static!important;inset:auto!important;width:100%!important;height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch}
+html:root:root body:not(.zz){position:static!important;inset:auto!important;height:auto!important;min-height:100vh!important;min-height:100dvh!important;overflow:visible!important;touch-action:pan-y;overscroll-behavior-y:auto;padding-bottom:env(safe-area-inset-bottom)}
+html:root:root body:not(.zz).milan-drawer-open,html:root:root body:not(.zz).milan-mobile-menu-open{overflow:hidden!important}
+@media (max-width:780px){html:root:root #root,html:root:root #app,html:root:root .milan-container,html:root:root .hero-panel,html:root:root .login-card,html:root:root main,html:root:root .container,html:root:root .wrapper,html:root:root .page{height:auto!important;max-height:none!important;overflow:visible!important}}
+img,video,canvas,svg,table{max-width:100%}
+pre{max-width:100%;overflow-x:auto}
+</style>
+<style id="mobile-ui">
+@media (max-width:780px){
+:root{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+:root body{font-size:16px;line-height:1.65;overflow-wrap:break-word}
+:root body h1{font-size:clamp(1.65rem,7vw,2.2rem);line-height:1.2;letter-spacing:-.01em;margin:0 0 .6em}
+:root body h2{font-size:clamp(1.35rem,5.6vw,1.75rem);line-height:1.25;margin:1.4em 0 .5em}
+:root body h3{font-size:clamp(1.12rem,4.6vw,1.3rem);line-height:1.3;margin:1.2em 0 .4em}
+:root body p,:root body li{font-size:1rem;line-height:1.65}
+:root body p{margin:0 0 1em}
+:root body ul,:root body ol{padding-left:1.25em}
+:root body :is(p,li,td,th,a,code,span){overflow-wrap:anywhere}
+:root body :is(main,.container,.wrap,.wrapper){width:100%;max-width:100%;box-sizing:border-box;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+:root body :is(section,article,div,header,footer,nav,aside){min-width:0}
+:root body :is(.grid,.cards,.card-grid,.compare-grid){grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+:root body table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+:root body :is(img,video,canvas,svg){max-width:100%;height:auto}
+:root body iframe{max-width:100%}
+:root body pre{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}
+:root body :is(.btn,.button,.cta){min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+}
+</style>
+<style id="mobile-ui3">@media (max-width:780px){
+#milan-mic-btn,#milan-fab,#milan-ptr,.milan-cmd-shortcut{display:none!important}
+}</style>
+<script src="/pwa-install.js?v=20261127f"></script></head>
+<body>
+  <div class="box">
+    <img class="logo" src="/assets/milan-logo-circle.png" alt="MILAN">
+    <h1>You're offline</h1>
+    <p>MILAN needs an internet connection to load your decentralized space. Check your connection and try again — your data is safe in your own node.</p>
+    <button onclick="location.reload()">Retry</button>
+    <small>MILAN — decentralized, privacy-first social media.</small>
+  </div>
+<script>
+  // Auto-retry the moment connectivity returns.
+  window.addEventListener('online', function () { location.reload(); });
+</script>
+<script src="/milan.js?v=20261127g" defer></script></body>
+</html>

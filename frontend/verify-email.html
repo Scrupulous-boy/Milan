@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verify your email · MILAN</title>
+<meta name="robots" content="noindex,follow,max-image-preview:large">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;color:#f0e6ff;
+  background:radial-gradient(ellipse at 20% 0,rgba(20,100,184,.3) 0,transparent 50%),radial-gradient(ellipse at 80% 10%,rgba(217,70,239,.22) 0,transparent 42%),radial-gradient(ellipse at 50% 100%,rgba(245,158,11,.12) 0,transparent 55%),#050e2b}
+.card{width:100%;max-width:440px;background:linear-gradient(170deg,rgba(10,26,62,.98),rgba(7,18,48,.99) 60%,rgba(13,59,122,.85));border:1px solid rgba(245,158,11,.28);border-radius:24px;padding:34px 30px;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.logo{font-weight:800;letter-spacing:.28em;font-size:1.6rem;background:linear-gradient(135deg,#f59e0b,#fbbf24,#d946ef);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center}
+.tag{text-align:center;color:#8ba4d4;font-size:.8rem;margin-top:4px;letter-spacing:.04em}
+h1{font-size:1.4rem;font-weight:700;margin:26px 0 6px;text-align:center}
+p.sub{color:#b8ccee;font-size:.9rem;text-align:center;line-height:1.6;margin-bottom:18px}
+.icon{width:64px;height:64px;border-radius:50%;margin:8px auto 0;display:flex;align-items:center;justify-content:center;font-size:30px}
+.icon.spin{background:rgba(245,158,11,.14)}
+.icon.ok{background:rgba(16,185,129,.16);color:#34d399}
+.icon.err{background:rgba(239,68,68,.16);color:#f87171}
+.spinner{width:34px;height:34px;border:3px solid rgba(245,158,11,.25);border-top-color:#fbbf24;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+label{display:block;font-size:.8rem;font-weight:600;color:#b8ccee;margin:14px 0 6px}
+input{width:100%;background:rgba(5,14,43,.85);border:1px solid rgba(100,160,255,.22);color:#f0e6ff;border-radius:14px;padding:.8rem 1rem;font-size:1rem;letter-spacing:.18em;text-align:center;outline:0}
+input:focus{border-color:rgba(245,158,11,.65);box-shadow:0 0 0 3px rgba(245,158,11,.16)}
+button{width:100%;margin-top:18px;background:linear-gradient(135deg,#f59e0b,#fbbf24 50%,#d946ef);color:#030920;font-weight:900;border:0;border-radius:18px;padding:.8rem;font-size:.95rem;cursor:pointer;transition:.15s}
+button:hover{filter:brightness(1.08)}button:disabled{opacity:.6;cursor:not-allowed}
+.ghost{background:transparent!important;color:#fbbf24!important;border:1px solid rgba(245,158,11,.4)!important;font-weight:700!important;margin-top:10px}
+.msg{font-size:.82rem;text-align:center;margin-top:14px;min-height:1.2rem;line-height:1.5}
+.msg.err{color:#f87171}.msg.ok{color:#34d399}
+.links{text-align:center;margin-top:20px;font-size:.82rem;color:#8ba4d4}
+.links a{color:#fbbf24;text-decoration:none;font-weight:600}
+.hidden{display:none!important}
+</style>
+
+
+  <!-- MILAN cross-browser favicon and app identity -->
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png?v=20261108-brand1">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261108-brand1" sizes="any">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20261108-brand1" sizes="any">
+  <link rel="shortcut icon" href="/favicon.ico?v=20261108-brand1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20261108-brand1">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=20261108-brand1" color="#050e2b">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#050e2b">
+  <meta name="application-name" content="MILAN">
+  <meta name="apple-mobile-web-app-title" content="MILAN">
+  <meta name="msapplication-TileColor" content="#050e2b">
+  <meta name="msapplication-config" content="/browserconfig.xml?v=20261108-brand1">
+<link rel="stylesheet" href="/milan.css?v=20261127"><style id="mobile-fix">
+html:root:root{position:static!important;inset:auto!important;width:100%!important;height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch}
+html:root:root body:not(.zz){position:static!important;inset:auto!important;height:auto!important;min-height:100vh!important;min-height:100dvh!important;overflow:visible!important;touch-action:pan-y;overscroll-behavior-y:auto;padding-bottom:env(safe-area-inset-bottom)}
+html:root:root body:not(.zz).milan-drawer-open,html:root:root body:not(.zz).milan-mobile-menu-open{overflow:hidden!important}
+@media (max-width:780px){html:root:root #root,html:root:root #app,html:root:root .milan-container,html:root:root .hero-panel,html:root:root .login-card,html:root:root main,html:root:root .container,html:root:root .wrapper,html:root:root .page{height:auto!important;max-height:none!important;overflow:visible!important}}
+img,video,canvas,svg,table{max-width:100%}
+pre{max-width:100%;overflow-x:auto}
+</style>
+<style id="mobile-ui">
+@media (max-width:780px){
+:root{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+:root body{font-size:16px;line-height:1.65;overflow-wrap:break-word}
+:root body h1{font-size:clamp(1.65rem,7vw,2.2rem);line-height:1.2;letter-spacing:-.01em;margin:0 0 .6em}
+:root body h2{font-size:clamp(1.35rem,5.6vw,1.75rem);line-height:1.25;margin:1.4em 0 .5em}
+:root body h3{font-size:clamp(1.12rem,4.6vw,1.3rem);line-height:1.3;margin:1.2em 0 .4em}
+:root body p,:root body li{font-size:1rem;line-height:1.65}
+:root body p{margin:0 0 1em}
+:root body ul,:root body ol{padding-left:1.25em}
+:root body :is(p,li,td,th,a,code,span){overflow-wrap:anywhere}
+:root body :is(main,.container,.wrap,.wrapper){width:100%;max-width:100%;box-sizing:border-box;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+:root body :is(section,article,div,header,footer,nav,aside){min-width:0}
+:root body :is(.grid,.cards,.card-grid,.compare-grid){grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+:root body table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+:root body :is(img,video,canvas,svg){max-width:100%;height:auto}
+:root body iframe{max-width:100%}
+:root body pre{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}
+:root body :is(.btn,.button,.cta){min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+}
+</style>
+<style id="mobile-ui3">@media (max-width:780px){
+#milan-mic-btn,#milan-fab,#milan-ptr,.milan-cmd-shortcut{display:none!important}
+}</style>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<script src="/pwa-install.js?v=20261127f"></script>
+</head>
+<body>
+<div class="card">
+  <img src="/assets/milan-logo-circle.png" alt="MILAN" style="height:66px;width:66px;border-radius:18px;display:block;margin:0 auto 6px;box-shadow:0 8px 24px rgba(0,0,0,.4)">
+  <div class="tag" style="text-align:center">Your Space. Your People.</div>
+
+  <!-- Auto-verifying (token from link) -->
+  <div id="loading">
+    <div class="icon spin"><div class="spinner"></div></div>
+    <h1>Verifying your email…</h1>
+    <p class="sub">One moment while we confirm your address.</p>
+  </div>
+
+  <!-- Manual code entry / resend -->
+  <div id="form" class="hidden">
+    <div class="icon spin">✉️</div>
+    <h1>Confirm your email</h1>
+    <p class="sub">Enter the 6-digit code we emailed you, or open the link from your inbox.</p>
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="you@example.com" style="letter-spacing:0;text-align:left">
+    <label for="code">6-digit code</label>
+    <input id="code" inputmode="numeric" maxlength="6" placeholder="••••••">
+    <button id="verifyBtn">Verify email</button>
+    <button class="ghost" id="resendBtn">Resend verification email</button>
+  </div>
+
+  <!-- Success -->
+  <div id="done" class="hidden">
+    <div class="icon ok">✓</div>
+    <h1>Email verified</h1>
+    <p class="sub">Your MILAN account is fully confirmed.</p>
+    <button onclick="location.href='/app'">Open MILAN →</button>
+  </div>
+
+  <div id="msg" class="msg"></div>
+  <div class="links"><a href="/">← Back to sign in</a></div>
+</div>
+
+<script>
+var $=function(id){return document.getElementById(id);};
+function qp(k){return new URLSearchParams(location.search).get(k)||"";}
+function show(id){["loading","form","done"].forEach(function(x){$(x).classList.toggle("hidden",x!==id);});}
+function setMsg(t,ok){var m=$("msg");m.textContent=t||"";m.className="msg"+(t?(ok?" ok":" err"):"");}
+
+var email=qp("email"), token=qp("token");
+
+function verify(body){
+  return fetch("/api/auth/verify-email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
+    .then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.error||"Verification failed");return d;});});
+}
+
+function startManual(prefill){
+  show("form"); if(email)$("email").value=email; if(prefill)setMsg(prefill,false);
+}
+
+// If we arrived from an email link, verify automatically.
+if(token && email){
+  verify({email:email,token:token})
+    .then(function(){ show("done"); })
+    .catch(function(e){ startManual(e.message+" — you can enter the code below instead."); });
+} else {
+  startManual();
+}
+
+$("verifyBtn").onclick=function(){
+  var e=$("email").value.trim().toLowerCase(), c=$("code").value.trim();
+  if(!e||!c){setMsg("Enter your email and the 6-digit code.");return;}
+  $("verifyBtn").disabled=true; setMsg("");
+  verify({email:e,code:c})
+    .then(function(){ show("done"); })
+    .catch(function(err){ setMsg(err.message); })
+    .finally(function(){ $("verifyBtn").disabled=false; });
+};
+
+$("resendBtn").onclick=function(){
+  var e=($("email").value||email).trim().toLowerCase();
+  if(!e){setMsg("Enter your email first.");return;}
+  $("resendBtn").disabled=true;
+  fetch("/api/auth/resend-verification",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e})})
+    .then(function(r){return r.json();})
+    .then(function(d){ setMsg(d.message||"If that account exists, a verification email has been sent.",true); })
+    .catch(function(){ setMsg("Could not resend right now. Try again shortly."); })
+    .finally(function(){ setTimeout(function(){$("resendBtn").disabled=false;},4000); });
+};
+</script>
+
+
+<script src="/milan.js?v=20261127g" defer></script></body>
+</html>

@@ -1,0 +1,1080 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Cache-Control" content="no-store">
+<title>MILAN Pay — Secure Checkout</title>
+<style>
+:root{color-scheme:dark;--bg:#080d1b;--card:#111a2c;--line:#293650;--text:#f5f7ff;--muted:#a7b4cc;--brand:#76e4bb;--warn:#ffce78}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 450px at 50% -10%,#263b62 0%,transparent 65%),var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+main{max-width:760px;margin:0 auto;padding:28px 18px 60px}.top{display:flex;align-items:center;gap:12px;margin:14px 0 36px}.logo{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:var(--brand);color:#082218;font-weight:900;font-size:20px}.brand{font-weight:800;font-size:20px;letter-spacing:.2px}.tag{font-size:12px;color:var(--muted)}h1{font-size:clamp(30px,6vw,44px);line-height:1.1;margin:0 0 12px;letter-spacing:-1px}p{color:var(--muted);margin-top:0}.panel{background:rgba(17,26,44,.94);border:1px solid var(--line);border-radius:22px;padding:22px;margin-top:24px;box-shadow:0 20px 70px #0003}.eyebrow{font-size:12px;color:var(--brand);font-weight:800;text-transform:uppercase;letter-spacing:1.5px}.plans{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}.plan{background:#0d1525;color:var(--text);border:1px solid var(--line);border-radius:16px;padding:17px;text-align:left;cursor:pointer}.plan[aria-pressed=true]{border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}.plan strong{display:block;font-size:20px}.plan span{color:var(--muted);font-size:13px}.primary,.secondary{display:block;width:100%;border:0;border-radius:13px;padding:14px 16px;font-weight:800;font-size:15px;cursor:pointer;text-align:center;text-decoration:none}.primary{background:var(--brand);color:#062219}.secondary{background:#1b2940;color:var(--text);margin-top:10px}.primary:disabled{opacity:.5;cursor:not-allowed}.pill{display:inline-flex;gap:7px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:var(--warn)}#status{margin-top:14px;white-space:pre-wrap;font-size:14px;color:var(--muted)}.notice{border-left:3px solid var(--warn);padding:10px 12px;background:#2c2518;border-radius:8px;color:#ffe8b8;font-size:13px;margin-top:16px}.methods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}.method{border:1px solid var(--line);border-radius:12px;padding:11px 6px;text-align:center;font-size:13px;color:var(--muted)}footer{font-size:12px;color:#8290aa;margin-top:22px;text-align:center}a{color:var(--brand)}
+.payment-details[hidden]{display:none!important}.recipient{border:1px solid var(--line);border-radius:14px;padding:13px;margin-top:10px}.recipient strong{display:block;font-size:17px;margin-top:2px}.recipient code{display:inline-block;margin-top:5px;font-size:14px;color:var(--brand);overflow-wrap:anywhere}.payment-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,260px);gap:16px;align-items:start;margin-top:14px}.payment-actions{display:grid;grid-template-columns:1fr;gap:9px}.payment-actions .secondary{margin-top:0}.qr-card{border:1px solid var(--line);border-radius:15px;padding:12px;text-align:center;background:#0d1525}.qr-card img{display:block;width:min(100%,240px);height:auto;margin:4px auto 10px;background:#fff;padding:8px;border-radius:10px}.qr-card img[hidden]{display:none!important}.qr-card p{font-size:12px;margin:0}.ios-gpay{display:none!important}.ios-gpay.visible{display:block!important}.payment-help{font-size:12px;margin:12px 0 0}.copy-btn{font:inherit}@media(max-width:560px){.payment-grid{grid-template-columns:1fr}.qr-card img{width:min(100%,220px)}}@media(max-width:480px){.plans{grid-template-columns:1fr}.panel{padding:17px}.methods{grid-template-columns:1fr 1fr}}
+
+.cashfree-panel[hidden]{display:none!important}
+.cashfree-panel{margin-top:18px;border:1px solid var(--line);border-radius:15px;padding:16px;background:#0d1525}
+.cashfree-panel h3{margin:0 0 6px}
+.cashfree-panel label{display:block;font-weight:700;margin:12px 0 6px}
+.cashfree-panel input{width:100%;padding:13px;border-radius:10px;border:1px solid var(--line);background:#080d1b;color:var(--text);font:inherit}
+.cashfree-panel input:focus{outline:2px solid var(--brand);outline-offset:2px}
+.cashfree-panel .primary{margin-top:12px}
+.cashfree-panel .secondary{margin-top:9px}
+.cashfree-help{font-size:12px;margin:8px 0 0}
+.cashfree-panel a{display:block;text-align:center;margin-top:12px}
+
+</style>
+
+  <!-- MILAN cross-browser favicon and app identity -->
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png?v=20261108-brand1">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261108-brand1" sizes="any">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20261108-brand1" sizes="any">
+  <link rel="shortcut icon" href="/favicon.ico?v=20261108-brand1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20261108-brand1">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=20261108-brand1" color="#050e2b">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#050e2b">
+  <meta name="application-name" content="MILAN">
+  <meta name="apple-mobile-web-app-title" content="MILAN">
+  <meta name="msapplication-TileColor" content="#050e2b">
+  <meta name="msapplication-config" content="/browserconfig.xml?v=20261108-brand1">
+<link rel="stylesheet" href="/milan.css?v=20261127"><style id="mobile-fix">
+html:root:root{position:static!important;inset:auto!important;width:100%!important;height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch}
+html:root:root body:not(.zz){position:static!important;inset:auto!important;height:auto!important;min-height:100vh!important;min-height:100dvh!important;overflow:visible!important;touch-action:pan-y;overscroll-behavior-y:auto;padding-bottom:env(safe-area-inset-bottom)}
+html:root:root body:not(.zz).milan-drawer-open,html:root:root body:not(.zz).milan-mobile-menu-open{overflow:hidden!important}
+@media (max-width:780px){html:root:root #root,html:root:root #app,html:root:root .milan-container,html:root:root .hero-panel,html:root:root .login-card,html:root:root main,html:root:root .container,html:root:root .wrapper,html:root:root .page{height:auto!important;max-height:none!important;overflow:visible!important}}
+img,video,canvas,svg,table{max-width:100%}
+pre{max-width:100%;overflow-x:auto}
+</style>
+<style id="mobile-ui">
+@media (max-width:780px){
+:root{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+:root body{font-size:16px;line-height:1.65;overflow-wrap:break-word}
+:root body h1{font-size:clamp(1.65rem,7vw,2.2rem);line-height:1.2;letter-spacing:-.01em;margin:0 0 .6em}
+:root body h2{font-size:clamp(1.35rem,5.6vw,1.75rem);line-height:1.25;margin:1.4em 0 .5em}
+:root body h3{font-size:clamp(1.12rem,4.6vw,1.3rem);line-height:1.3;margin:1.2em 0 .4em}
+:root body p,:root body li{font-size:1rem;line-height:1.65}
+:root body p{margin:0 0 1em}
+:root body ul,:root body ol{padding-left:1.25em}
+:root body :is(p,li,td,th,a,code,span){overflow-wrap:anywhere}
+:root body :is(main,.container,.wrap,.wrapper){width:100%;max-width:100%;box-sizing:border-box;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+:root body :is(section,article,div,header,footer,nav,aside){min-width:0}
+:root body :is(.grid,.cards,.card-grid,.compare-grid){grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+:root body table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+:root body :is(img,video,canvas,svg){max-width:100%;height:auto}
+:root body iframe{max-width:100%}
+:root body pre{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}
+:root body :is(.btn,.button,.cta){min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+}
+</style>
+<style id="mobile-ui2">@media (max-width:780px){
+:root .tag,:root .eyebrow,:root .pill,:root footer,:root .qr-card p,:root .payment-help,:root .cashfree-help{font-size:13px!important}
+:root [style*="font-size:9px"],:root [style*="font-size: 9px"],:root [style*="font-size:10px"],:root [style*="font-size: 10px"],:root [style*="font-size:11px"],:root [style*="font-size: 11px"],:root [style*="font-size:12px"],:root [style*="font-size: 12px"]{font-size:13px!important}
+}</style>
+<style id="mobile-ui3">@media (max-width:780px){
+:root .plans,:root .methods,:root .payment-grid{grid-template-columns:minmax(0,1fr)!important}
+#milan-mic-btn,#milan-fab,#milan-ptr,.milan-cmd-shortcut{display:none!important}
+}</style>
+<style id="mobile-ui4">
+html:root:root body:not(.zz){display:block!important;flex-direction:initial!important;align-items:normal!important;justify-content:normal!important;padding:0!important}
+</style>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<script src="/pwa-install.js?v=20261127f"></script>
+</head>
+<body>
+<main>
+  <div class="top"><div class="logo">M</div><div><div class="brand">MILAN Pay</div><div class="tag">MILAN merchant checkout</div></div></div>
+  <div class="eyebrow">Secure checkout</div>
+  <h1>Simple payments.<br>Built for MILAN.</h1>
+  <p>Choose your storage plan and continue using a supported payment method.</p>
+
+  <section class="panel">
+    <span class="pill"><span class="dot"></span><span id="railStatus">Checking payment setup…</span></span>
+    <h2 style="margin:18px 0 4px">Choose a plan</h2>
+    <p>Prices are set by the MILAN server.</p>
+    <div class="plans">
+      <button class="plan" data-plan="500mb" aria-pressed="true"><strong>500 MB</strong><span>Storage upgrade · ₹250</span></button>
+      <button class="plan" data-plan="1gb" aria-pressed="false"><strong>1 GB</strong><span>Storage upgrade · ₹500</span></button>
+    </div>
+    <div class="methods">
+      <div class="method">UPI apps*</div>
+      <div class="method">Cards — not enabled in direct UPI mode</div>
+      <div class="method">Direct UPI collection</div>
+    </div>
+    <button class="primary" id="pay" disabled>Loading payment options…</button>
+    <section id="cashfreePanel" class="cashfree-panel" hidden aria-label="Cashfree secure checkout">
+      <h3>Secure checkout with Cashfree</h3>
+      <p>Pay using the methods available in Cashfree hosted checkout. MILAN verifies payment status with the provider before upgrading storage.</p>
+      <label for="cashfreePhone">Mobile number (India)</label>
+      <input id="cashfreePhone" name="cashfreePhone" type="tel" inputmode="numeric"
+        autocomplete="tel-national" pattern="[6-9][0-9]{9}" minlength="10" maxlength="10"
+        placeholder="10-digit mobile number" aria-describedby="cashfreeHelp">
+      <p id="cashfreeHelp" class="cashfree-help">Use a valid Indian mobile number starting with 6, 7, 8 or 9.</p>
+      <button class="primary" id="cashfreePay" type="button" disabled>Loading Cashfree…</button>
+      <button class="secondary" id="cashfreeVerify" type="button" hidden>Verify payment status</button>
+      <a id="cashfreeLogin" href="/" hidden>Log in to verify your payment</a>
+    </section>
+    <a class="secondary" href="/storage-upgrade.html">Back to storage plans</a>
+    <div id="status" role="status" aria-live="polite"></div>
+    <section id="paymentDetails" class="payment-details" hidden aria-label="Payment details">
+      <div class="recipient">
+        <span class="tag">Pay to configured merchant destination</span>
+        <strong id="payeeName">MILAN Pay</strong>
+        <code id="payeeVpa"></code>
+      </div>
+      <div class="payment-grid">
+        <div class="payment-actions">
+          <a id="milan-upi-link" class="primary" rel="noopener">Open UPI payment app</a>
+          <a id="milan-gpay-ios-link" class="secondary ios-gpay" rel="noopener">Open Google Pay on iPhone/iPad</a>
+          <button class="secondary copy-btn" id="copyVpa" type="button">Copy merchant UPI ID</button>
+          <button class="secondary copy-btn" id="copyAmount" type="button">Copy amount</button>
+          <button class="secondary copy-btn" id="copyOrderId" type="button">Copy order reference</button>
+        </div>
+        <div class="qr-card">
+          <img id="upiQr" alt="Dynamic UPI payment QR code" hidden>
+          <p id="qrHelp">On a computer or tablet, scan this order-specific QR with a UPI app on another device. Verify the payee and amount before paying.</p>
+        </div>
+      </div>
+      <p class="payment-help">Never enter a UPI PIN or OTP on this page. After paying, return here and submit your UTR. On iOS, you may need to switch back to Safari manually.</p>
+    </section>
+    <form id="utrForm" hidden style="margin-top:18px;border-top:1px solid var(--line);padding-top:18px;">
+      <h3 style="margin:0 0 8px;">Submit transaction reference</h3>
+      <p id="orderSummary"></p>
+      <label for="utr" style="display:block;font-weight:700;margin:12px 0 6px;">UPI UTR / transaction reference</label>
+      <input id="utr" name="utr" autocomplete="off" required minlength="6" maxlength="80"
+        pattern="[A-Za-z0-9._-]{6,80}"
+        style="width:100%;padding:13px;border-radius:10px;border:1px solid var(--line);background:#0d1525;color:var(--text);"
+        placeholder="Enter the UTR from your UPI app">
+      <button class="secondary" id="submitUtr" type="submit">Submit UTR for verification</button>
+      <p style="margin-top:10px;font-size:12px;">Only submit after completing the payment. Do not enter your UPI PIN or OTP here. Submitting a UTR does not itself confirm payment.</p>
+    </form>
+    <div class="notice">Direct UPI checkout does not automatically verify payment. Submit the UTR after paying; storage remains unchanged until an administrator independently verifies the transaction against bank records.</div>
+  </section>
+  <footer>* Available payment methods depend on merchant approval and provider configuration. Cards are not enabled in this direct UPI flow. Never enter a payment PIN or OTP on a MILAN page.</footer>
+</main>
+<script>
+(() => {
+  "use strict";
+
+  const pay = document.getElementById("pay");
+  const status = document.getElementById("status");
+  const railStatus = document.getElementById("railStatus");
+  const utrForm = document.getElementById("utrForm");
+  const utrInput = document.getElementById("utr");
+  const submitUtr = document.getElementById("submitUtr");
+  const orderSummary = document.getElementById("orderSummary");
+  const paymentDetails = document.getElementById("paymentDetails");
+  const payeeName = document.getElementById("payeeName");
+  const payeeVpa = document.getElementById("payeeVpa");
+  const upiQr = document.getElementById("upiQr");
+  const qrHelp = document.getElementById("qrHelp");
+  const upiLink = document.getElementById("milan-upi-link");
+  const googlePayIosLink = document.getElementById("milan-gpay-ios-link");
+  const copyVpaButton = document.getElementById("copyVpa");
+  const copyAmountButton = document.getElementById("copyAmount");
+  const copyOrderIdButton = document.getElementById("copyOrderId");
+
+  const cashfreePanel = document.getElementById("cashfreePanel");
+  const cashfreePhone = document.getElementById("cashfreePhone");
+  const cashfreePay = document.getElementById("cashfreePay");
+  const cashfreeVerify = document.getElementById("cashfreeVerify");
+  const cashfreeLogin = document.getElementById("cashfreeLogin");
+  const isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const token = () => localStorage.getItem("milan_token") || "";
+  const validPlans = ["500mb", "1gb"];
+  let plan = new URLSearchParams(location.search).get("plan") || "500mb";
+  if (!validPlans.includes(plan)) plan = "500mb";
+
+  let ready = false;
+  let busy = false;
+  const supportRequiredPaymentCodes = new Set([
+    'STORAGE_REQUEST_PENDING',
+    'MILAN_PAY_PENDING_ORDER_RECONCILIATION_REQUIRED',
+    'MILAN_PAY_PENDING_ORDER_RECIPIENT_INVALID',
+    'MILAN_PAY_PENDING_ORDER_RECIPIENT_UNVERIFIED',
+    'MILAN_PAY_ORDER_VERIFICATION_ALREADY_SUBMITTED'
+  ]);
+  let pendingOrder = false;
+  let currentOrderId = "";
+  let currentOrderPlan = "";
+  let currentUpiUri = "";
+  let currentMerchantVpa = "";
+  let currentMerchantName = "MILAN Pay";
+  let currentAmountInr = 0;
+  let currentGooglePayIosUri = "";
+
+  const cashfreeReturnOrderId =
+    new URLSearchParams(location.search).get("order_id") || "";
+  let cashfreeReady = false;
+  let cashfreeEnvironment = "";
+  let cashfreeBusy = false;
+  let cashfreeOrderId = "";
+  let cashfreeSdkPromise = null;
+  let cashfreeResumeAllowed = false;
+
+  function setStatus(message, error) {
+    status.textContent = message || "";
+    status.style.color = error ? "#ffadad" : "var(--muted)";
+  }
+
+  function requiresPaymentSupport(code) {
+    return supportRequiredPaymentCodes.has(code);
+  }
+
+  function paymentSupportButtonLabel(code) {
+    return code === 'STORAGE_REQUEST_PENDING' ? 'Verification pending' : 'Contact support';
+  }
+
+  function setPlanButtonsDisabled(disabled) {
+    document.querySelectorAll("[data-plan]").forEach(button => {
+      button.disabled = disabled;
+      button.setAttribute("aria-pressed", String(button.dataset.plan === plan));
+    });
+  }
+
+  function clearSavedOrder() {
+    sessionStorage.removeItem("milanPaymentOrderId");
+    sessionStorage.removeItem("milanPaymentUri");
+    sessionStorage.removeItem("milanPaymentPlan");
+  }
+
+  function showPendingOrder(orderId, upiUri, orderPlan, amount, qrDataUrl, merchantVpa, merchantName, googlePayIosUri) {
+    currentOrderId = orderId;
+    currentUpiUri = upiUri;
+    currentOrderPlan = orderPlan;
+    currentMerchantVpa = merchantVpa || "";
+    currentMerchantName = merchantName || "MILAN Pay";
+    currentAmountInr = Number(amount);
+    currentGooglePayIosUri = googlePayIosUri || "";
+    pendingOrder = true;
+
+    sessionStorage.setItem("milanPaymentOrderId", orderId);
+    sessionStorage.setItem("milanPaymentPlan", orderPlan);
+    sessionStorage.removeItem("milanPaymentUri");
+
+    upiLink.href = upiUri;
+    payeeName.textContent = currentMerchantName;
+    payeeVpa.textContent = currentMerchantVpa;
+    paymentDetails.hidden = false;
+    if (qrDataUrl && qrDataUrl.startsWith("data:image/png;base64,")) {
+      upiQr.src = qrDataUrl;
+      upiQr.alt = "UPI payment QR for ₹" + currentAmountInr + " payable to " + currentMerchantName;
+      upiQr.hidden = false;
+    } else {
+      upiQr.removeAttribute("src");
+      upiQr.hidden = true;
+    }
+    googlePayIosLink.href = currentGooglePayIosUri || "#";
+    googlePayIosLink.classList.toggle("visible", Boolean(currentGooglePayIosUri) && isIOSDevice);
+    qrHelp.textContent = isIOSDevice
+      ? "If the Google Pay button is available, use it to launch GPay. Otherwise copy the merchant UPI ID and amount into your UPI app. QR is useful when another device is available."
+      : "On a computer or tablet, scan this order-specific QR with a UPI app on another device. On Android, you can also use Open UPI payment app. Verify the payee and amount before paying.";
+
+    orderSummary.textContent =
+      "Order ID: " + orderId +
+      " | Plan: " + (orderPlan === "500mb" ? "500 MB" : "1 GB") +
+      " | Amount: ₹" + amount;
+
+    utrForm.hidden = false;
+    setPlanButtonsDisabled(true);
+    pay.disabled = true;
+    pay.textContent = "Order created — submit UTR below";
+
+    setStatus(
+      "Order created. Complete the UPI payment and enter its transaction reference / UTR below. " +
+      "The order remains pending and storage is not activated until an administrator verifies the transaction against bank records."
+    );
+  }
+
+  async function loadConfig() {
+    const response = await fetch("/api/milan-pay/config", { cache: "no-store" });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error("MILAN Pay setup could not be checked.");
+    return data;
+  }
+
+  async function loadCashfreeConfig() {
+    const response = await fetch("/api/cashfree/config", { cache: "no-store" });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error("Cashfree setup could not be checked.");
+    return data;
+  }
+
+  function loadCashfreeSdk() {
+    if (typeof window.Cashfree === "function") {
+      return Promise.resolve(window.Cashfree);
+    }
+
+    if (cashfreeSdkPromise) return cashfreeSdkPromise;
+
+<<<<<<< HEAD
+    cashfreeSdkPromise = new Promise((resolve, reject) => {
+      let script = document.querySelector('script[data-cashfree-sdk="true"]');
+
+      if (!script) {
+        script = document.createElement("script");
+        script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
+        script.async = true;
+        script.dataset.cashfreeSdk = "true";
+        script.crossOrigin = "anonymous";
+        script.referrerPolicy = "strict-origin-when-cross-origin";
+      }
+
+      script.onload = () => {
+        if (typeof window.Cashfree === "function") {
+          resolve(window.Cashfree);
+        } else {
+          cashfreeSdkPromise = null;
+          reject(new Error("Cashfree checkout SDK did not initialize."));
+        }
+      };
+
+      script.onerror = () => {
+        cashfreeSdkPromise = null;
+        reject(new Error("Cashfree checkout SDK could not be loaded."));
+      };
+
+      if (!script.isConnected) document.head.appendChild(script);
+=======
+    cashfreeSdkPromise = (async () => {
+      const maxAttempts = 3;
+      const timeoutMs = 15000;
+      let lastError = null;
+
+      for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+        if (typeof window.Cashfree === "function") {
+          return window.Cashfree;
+        }
+
+        // A failed script element stays connected in the DOM. Remove it before
+        // each retry so the browser actually starts a fresh CDN request.
+        const existingScript = document.querySelector('script[data-cashfree-sdk="true"]');
+        if (existingScript) existingScript.remove();
+
+        const script = document.createElement("script");
+        script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
+        script.async = true;
+        script.dataset.cashfreeSdk = "true";
+
+        try {
+          await new Promise((resolve, reject) => {
+            let settled = false;
+            const timeoutId = window.setTimeout(() => {
+              finish(new Error("Cashfree SDK request timed out."));
+            }, timeoutMs);
+
+            function finish(error) {
+              if (settled) return;
+              settled = true;
+              window.clearTimeout(timeoutId);
+              script.onload = null;
+              script.onerror = null;
+              if (error) reject(error);
+              else resolve();
+            }
+
+            script.onload = () => {
+              if (typeof window.Cashfree === "function") {
+                finish();
+              } else {
+                finish(new Error("Cashfree SDK loaded but did not initialize."));
+              }
+            };
+
+            script.onerror = () => {
+              finish(new Error("Cashfree SDK request failed. The CDN may be blocked by the network, DNS, browser, or a content-blocking extension."));
+            };
+
+            try {
+              document.head.appendChild(script);
+            } catch (error) {
+              finish(error);
+            }
+          });
+
+          if (typeof window.Cashfree === "function") {
+            return window.Cashfree;
+          }
+
+          lastError = new Error("Cashfree SDK did not expose its checkout function.");
+        } catch (error) {
+          lastError = error;
+          script.remove();
+        }
+
+        if (attempt < maxAttempts) {
+          await new Promise(resolve => window.setTimeout(resolve, 400 * attempt));
+        }
+      }
+
+      const detail = lastError && lastError.message
+        ? lastError.message
+        : "The Cashfree SDK could not be reached.";
+      throw new Error(
+        "Cashfree checkout SDK could not be loaded after " +
+        maxAttempts +
+        " attempts. " +
+        detail +
+        " Check your connection or browser content blocker, then retry."
+      );
+    })().finally(() => {
+      // Always clear the shared promise. A later tap can start a fresh attempt.
+      cashfreeSdkPromise = null;
+>>>>>>> origin/main
+    });
+
+    return cashfreeSdkPromise;
+  }
+
+  function setCashfreeLoginState() {
+    const authenticated = Boolean(token());
+    cashfreeLogin.hidden = authenticated;
+    cashfreePay.disabled = !authenticated || !cashfreeReady || cashfreeBusy;
+    if (!authenticated) cashfreePay.textContent = "Log in to pay securely";
+  }
+
+  function clearSavedCashfreeOrder() {
+    sessionStorage.removeItem("milanCashfreeOrderId");
+    sessionStorage.removeItem("milanCashfreePlan");
+  }
+
+  function removeCashfreeReturnParameter() {
+    try {
+      const url = new URL(location.href);
+      url.searchParams.delete("order_id");
+      history.replaceState(null, "", url.pathname + url.search + url.hash);
+    } catch (_) {
+      // URL cleanup is cosmetic; verification has already happened server-side.
+    }
+  }
+
+  async function verifyCashfreeOrder(orderId) {
+    if (!token()) {
+      cashfreePanel.hidden = false;
+      cashfreeLogin.hidden = false;
+      cashfreePay.disabled = true;
+      cashfreeVerify.hidden = true;
+      setStatus("Log in to verify your Cashfree payment. Do not create another payment order.", true);
+      return false;
+    }
+
+    if (!/^MLNCF_[a-z0-9]+_[a-f0-9]{16}$/.test(orderId)) {
+      setStatus("Invalid Cashfree return order reference. Contact support.", true);
+      return false;
+    }
+
+    cashfreeBusy = true;
+    cashfreeVerify.hidden = false;
+    cashfreeVerify.disabled = true;
+    cashfreeVerify.textContent = "Checking provider payment…";
+    cashfreePay.disabled = true;
+
+    try {
+      const response = await fetch(
+        "/api/cashfree/orders/" + encodeURIComponent(orderId) + "/verify",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token()
+          },
+          body: JSON.stringify({}),
+          cache: "no-store"
+        }
+      );
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || data.ok !== true) {
+        throw new Error(data.error || "Cashfree payment status could not be verified.");
+      }
+
+      cashfreeOrderId = orderId;
+      sessionStorage.setItem("milanCashfreeOrderId", orderId);
+
+      if (data.status === "paid") {
+        cashfreeResumeAllowed = false;
+        clearSavedCashfreeOrder();
+        pendingOrder = true;
+        setPlanButtonsDisabled(true);
+        pay.disabled = true;
+        pay.textContent = "Payment verified";
+        cashfreePay.disabled = true;
+        cashfreePay.textContent = "Payment completed";
+        cashfreeVerify.hidden = true;
+        cashfreeLogin.hidden = true;
+
+        setStatus(
+          "Payment confirmed by Cashfree and independently verified by MILAN. " +
+          "Your storage upgrade has been activated."
+        );
+        removeCashfreeReturnParameter();
+        return true;
+      }
+
+      if (data.status !== "pending") {
+        throw new Error("The payment order is not in a verifiable state. Contact support.");
+      }
+
+      if (data.reviewRequired === true) {
+        cashfreeResumeAllowed = false;
+        pendingOrder = true;
+        setPlanButtonsDisabled(true);
+        pay.disabled = true;
+        pay.textContent = "Cashfree payment under review";
+        cashfreePanel.hidden = false;
+        cashfreeVerify.hidden = false;
+        cashfreeVerify.disabled = false;
+        cashfreeVerify.textContent = "Verify payment status";
+        cashfreePay.disabled = true;
+        cashfreePay.textContent = "Payment under review";
+        cashfreeLogin.hidden = true;
+        setStatus(
+          "Your Cashfree payment requires reconciliation. Do not retry checkout or make another payment. Verify the status again later or contact MILAN support.",
+          true
+        );
+        return false;
+      }
+
+      cashfreeResumeAllowed = true;
+      pendingOrder = true;
+      setPlanButtonsDisabled(true);
+      pay.disabled = true;
+      pay.textContent = "Cashfree payment pending";
+      cashfreePanel.hidden = false;
+      cashfreeVerify.hidden = false;
+      cashfreeVerify.disabled = false;
+      cashfreeVerify.textContent = "Verify payment status";
+      cashfreePay.disabled = !cashfreeReady || cashfreeBusy;
+      cashfreePay.textContent = "Resume secure checkout";
+      cashfreeLogin.hidden = true;
+
+      setStatus(
+        data.reviewRequired
+          ? "Your payment needs reconciliation. Do not pay again. Use Verify payment status later or contact MILAN support."
+          : "Cashfree has not yet confirmed a successful payment. Your order remains pending and storage has not been upgraded. You may verify again; do not create another payment."
+      );
+
+      return false;
+    } catch (error) {
+      cashfreeResumeAllowed = false;
+      cashfreeVerify.hidden = false;
+      cashfreeVerify.disabled = false;
+      cashfreeVerify.textContent = "Retry payment verification";
+      cashfreePay.disabled = true;
+      cashfreePay.textContent = "Verification required";
+      cashfreeLogin.hidden = true;
+      setStatus(
+        error.message || "Cashfree verification is temporarily unavailable. Do not create another order.",
+        true
+      );
+      return false;
+    } finally {
+      cashfreeBusy = false;
+      if (cashfreeVerify && !cashfreeVerify.hidden) {
+        cashfreeVerify.disabled = false;
+      }
+    }
+  }
+
+  async function restoreCashfreeOrder() {
+    const savedId = cashfreeReturnOrderId ||
+      sessionStorage.getItem("milanCashfreeOrderId") || "";
+
+    if (!savedId) return false;
+
+    cashfreePanel.hidden = false;
+    cashfreeOrderId = savedId;
+    sessionStorage.setItem("milanCashfreeOrderId", savedId);
+
+    const savedPlan = sessionStorage.getItem("milanCashfreePlan") || "";
+    if (validPlans.includes(savedPlan)) {
+      plan = savedPlan;
+      setPlanButtonsDisabled(true);
+    }
+
+    if (!token()) {
+      cashfreeLogin.hidden = false;
+      cashfreePay.disabled = true;
+      cashfreePay.textContent = "Log in to verify payment";
+      cashfreeVerify.hidden = true;
+      setStatus("Log in to verify your Cashfree order. Do not pay again.", true);
+      return true;
+    }
+
+    if (!cashfreeReady) {
+      cashfreePay.disabled = true;
+      cashfreeVerify.hidden = true;
+      setStatus(
+        "Cashfree is currently unavailable. Your saved order reference has been retained; do not create another payment.",
+        true
+      );
+      return true;
+    }
+
+    await verifyCashfreeOrder(savedId);
+    return true;
+  }
+
+  async function restorePendingOrder() {
+    const savedId = sessionStorage.getItem("milanPaymentOrderId") || "";
+    const savedPlan = sessionStorage.getItem("milanPaymentPlan") || "";
+
+    if (!savedId || !validPlans.includes(savedPlan) || !token()) {
+      return false;
+    }
+
+    try {
+      const response = await fetch(
+        "/api/milan-pay/orders/" + encodeURIComponent(savedId) + "/status",
+        {
+          headers: { Authorization: "Bearer " + token() },
+          cache: "no-store"
+        }
+      );
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          clearSavedOrder();
+          return false;
+        }
+        setStatus(data.error || "Could not recheck the existing order. Retry after checking your connection.", true);
+        pay.disabled = true;
+        pay.textContent = requiresPaymentSupport(data.code)
+          ? paymentSupportButtonLabel(data.code)
+          : "Payment status unavailable";
+        return true;
+      }
+
+      if (data.status !== "pending" || data.plan !== savedPlan) {
+        clearSavedOrder();
+        return false;
+      }
+      if (data.paymentActionRequired === false) {
+        clearSavedOrder();
+        setStatus(
+          data.message || "A verification request is already linked to this order. Do not pay again.",
+          data.verificationPending !== true
+        );
+        pay.disabled = true;
+        pay.textContent = data.verificationPending ? "Verification pending" : "Contact support";
+        return true;
+      }
+      if (typeof data.upiUri !== "string" || !data.upiUri.startsWith("upi://pay?") || !data.merchantVpa) {
+        setStatus("Server did not return checkout destination details. Do not pay; contact support.", true);
+        pay.disabled = true;
+        return true;
+      }
+
+      // Never trust the payment URI from sessionStorage; reconstruct it from the authenticated server response.
+      showPendingOrder(savedId, data.upiUri, savedPlan, data.amountInr, data.qrDataUrl, data.merchantVpa, data.merchantName, data.googlePayIosUri);
+      return true;
+    } catch (_) {
+      setStatus("Could not recheck the existing order. Refresh after restoring your connection.", true);
+      pay.disabled = true;
+      return true;
+    }
+  }
+
+  document.querySelectorAll("[data-plan]").forEach(button => {
+    button.addEventListener("click", () => {
+      if (pendingOrder) return;
+      plan = button.dataset.plan;
+      setPlanButtonsDisabled(false);
+    });
+  });
+
+  pay.addEventListener("click", async () => {
+    if (!token()) {
+      location.href = "/";
+      return;
+    }
+    if (!ready || busy || pendingOrder) return;
+
+    busy = true;
+    let supportRequired = false;
+    let supportCode = '';
+    pay.disabled = true;
+    pay.textContent = "Creating secure order…";
+    setStatus("Creating your MILAN Pay order…");
+
+    try {
+      const response = await fetch("/api/milan-pay/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token()
+        },
+        body: JSON.stringify({ plan }),
+        cache: "no-store"
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.ok) {
+        supportCode = String(data.code || '');
+        supportRequired = requiresPaymentSupport(supportCode);
+        throw new Error(data.error || "Could not create the payment order.");
+      }
+
+      if (typeof data.upiUri !== "string" ||
+          !data.upiUri.startsWith("upi://pay?") ||
+          !data.orderId ||
+          data.plan !== plan ||
+          !Number.isFinite(Number(data.amountInr)) ||
+          typeof data.merchantVpa !== "string" ||
+          !/^[A-Za-z0-9._-]{2,256}@[A-Za-z][A-Za-z0-9]{1,63}$/.test(data.merchantVpa)) {
+        throw new Error("MILAN Pay returned invalid order or receiver details.");
+      }
+
+      showPendingOrder(data.orderId, data.upiUri, data.plan, data.amountInr, data.qrDataUrl, data.merchantVpa, data.merchantName, data.googlePayIosUri);
+    } catch (error) {
+      setStatus(error.message || "MILAN Pay is temporarily unavailable.", true);
+      pay.disabled = supportRequired || !ready;
+      pay.textContent = supportRequired
+        ? paymentSupportButtonLabel(supportCode)
+        : "Create UPI payment";
+    } finally {
+      busy = false;
+    }
+  });
+
+  async function copyPaymentValue(value, label) {
+    if (!value) {
+      setStatus("No " + label.toLowerCase() + " is available to copy.", true);
+      return;
+    }
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(String(value));
+      } else {
+        const area = document.createElement("textarea");
+        area.value = String(value);
+        area.setAttribute("readonly", "");
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        const copied = document.execCommand("copy");
+        area.remove();
+        if (!copied) throw new Error("Copy is not available in this browser.");
+      }
+      setStatus(label + " copied. Verify the recipient and amount in your UPI app.");
+    } catch (_) {
+      setStatus("Could not copy " + label.toLowerCase() + ". Please select and copy it manually.", true);
+    }
+  }
+
+  copyVpaButton.addEventListener("click", () => copyPaymentValue(currentMerchantVpa, "Merchant UPI ID"));
+  copyAmountButton.addEventListener("click", () => copyPaymentValue(Number(currentAmountInr).toFixed(2), "Amount"));
+  copyOrderIdButton.addEventListener("click", () => copyPaymentValue(currentOrderId, "Order reference"));
+
+  utrForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!token()) {
+      location.href = "/";
+      return;
+    }
+    if (!currentOrderId || !currentOrderPlan || busy) {
+      setStatus("Create or restore a valid MILAN Pay order first.", true);
+      return;
+    }
+
+    const utr = utrInput.value.trim();
+    if (!/^[A-Za-z0-9._-]{6,80}$/.test(utr)) {
+      setStatus("Enter the transaction reference / UTR exactly as shown by your UPI app.", true);
+      utrInput.focus();
+      return;
+    }
+
+    busy = true;
+    submitUtr.disabled = true;
+    submitUtr.textContent = "Submitting for verification…";
+    setStatus("Submitting your UTR. Storage will remain unchanged pending bank verification.");
+
+    try {
+      const response = await fetch("/api/storage/upgrade-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token()
+        },
+        body: JSON.stringify({
+          plan: currentOrderPlan,
+          orderId: currentOrderId,
+          utr
+        }),
+        cache: "no-store"
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || "Could not submit the transaction reference.");
+      }
+
+      const requestId = data.request && data.request.id ? data.request.id : "submitted";
+      clearSavedOrder();
+      utrForm.hidden = true;
+
+      const link = document.getElementById("milan-upi-link");
+      if (link) link.remove();
+
+      setStatus(
+        "UTR submitted successfully. Request: " + requestId +
+        ". Status: PENDING BANK VERIFICATION. Your storage is not upgraded yet. " +
+        "An administrator must independently verify the transaction in bank records before approval."
+      );
+      pay.disabled = true;
+      pay.textContent = "Verification pending";
+    } catch (error) {
+      setStatus(error.message || "Could not submit the transaction reference.", true);
+    } finally {
+      busy = false;
+      submitUtr.disabled = false;
+      submitUtr.textContent = "Submit UTR for verification";
+    }
+  });
+
+
+  cashfreePay.addEventListener("click", async () => {
+    if (!token()) {
+      location.href = "/";
+      return;
+    }
+
+    if (!cashfreeReady || cashfreeBusy || (pendingOrder && !cashfreeOrderId)) {
+      return;
+    }
+
+    const phone = cashfreePhone.value.trim();
+    if (!/^[6-9][0-9]{9}$/.test(phone)) {
+      setStatus("Enter a valid 10-digit Indian mobile number to continue with Cashfree.", true);
+      cashfreePhone.focus();
+      return;
+    }
+
+    cashfreeBusy = true;
+    cashfreePay.disabled = true;
+    cashfreePay.textContent = "Preparing secure checkout…";
+    setStatus("Preparing your Cashfree checkout. The amount and plan are set by the MILAN server.");
+
+    let createdOrderId = "";
+
+    try {
+      const Cashfree = await loadCashfreeSdk();
+      const client = Cashfree({ mode: cashfreeEnvironment });
+
+      const response = await fetch("/api/cashfree/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token()
+        },
+        body: JSON.stringify({ plan, phone }),
+        cache: "no-store"
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || data.ok !== true) {
+        throw new Error(data.error || "Could not create a Cashfree order.");
+      }
+
+      if (
+        !/^MLNCF_[a-z0-9]+_[a-f0-9]{16}$/.test(String(data.orderId || "")) ||
+        data.provider !== "cashfree" ||
+        data.plan !== plan ||
+        !Number.isFinite(Number(data.amountInr)) ||
+        Number(data.amountInr) !== (plan === "500mb" ? 250 : 500) ||
+        data.currency !== "INR" ||
+        typeof data.paymentSessionId !== "string" ||
+        !data.paymentSessionId ||
+        data.environment !== cashfreeEnvironment
+      ) {
+        throw new Error("MILAN returned invalid Cashfree checkout details.");
+      }
+
+      createdOrderId = data.orderId;
+      cashfreeOrderId = createdOrderId;
+      cashfreeResumeAllowed = true;
+      sessionStorage.setItem("milanCashfreeOrderId", createdOrderId);
+      sessionStorage.setItem("milanCashfreePlan", plan);
+
+      pendingOrder = true;
+      setPlanButtonsDisabled(true);
+      pay.disabled = true;
+      pay.textContent = "Cashfree order pending";
+      cashfreeVerify.hidden = false;
+      cashfreeVerify.disabled = true;
+
+      setStatus(
+        "Cashfree order created. Complete payment in the secure provider window. " +
+        "MILAN will verify the result with Cashfree before activating storage."
+      );
+
+      const checkoutResult = await client.checkout({
+        paymentSessionId: data.paymentSessionId,
+        redirectTarget: "_self"
+      });
+
+      if (checkoutResult && checkoutResult.error) {
+        cashfreeResumeAllowed = true;
+        cashfreeVerify.disabled = false;
+        cashfreeVerify.textContent = "Verify payment status";
+        cashfreePay.disabled = false;
+        cashfreePay.textContent = "Resume secure checkout";
+        setStatus(
+          "Cashfree checkout returned an error. Your order is retained; verify its status before retrying.",
+          true
+        );
+        return;
+      }
+
+      // A returned SDK promise or browser redirect is not proof of payment.
+      await verifyCashfreeOrder(createdOrderId);
+    } catch (error) {
+      cashfreePay.disabled = !cashfreeReady;
+      cashfreePay.textContent = createdOrderId
+        ? "Resume secure checkout"
+        : "Pay securely with Cashfree";
+
+      if (createdOrderId) {
+        cashfreeResumeAllowed = true;
+        cashfreeVerify.hidden = false;
+        cashfreeVerify.disabled = false;
+        cashfreeVerify.textContent = "Verify payment status";
+        setStatus(
+          (error.message || "Cashfree checkout could not be opened.") +
+          " Your order is retained. Verify its status before retrying.",
+          true
+        );
+      } else {
+        setStatus(error.message || "Cashfree checkout is temporarily unavailable.", true);
+      }
+    } finally {
+      cashfreeBusy = false;
+      cashfreeLogin.hidden = Boolean(token());
+
+      if (
+        cashfreeResumeAllowed &&
+        cashfreeOrderId &&
+        cashfreeReady &&
+        !cashfreeVerify.hidden
+      ) {
+        cashfreePay.disabled = false;
+        if (cashfreePay.textContent === "Preparing secure checkout…") {
+          cashfreePay.textContent = "Resume secure checkout";
+        }
+      }
+    }
+  });
+
+  cashfreeLogin.addEventListener("click", () => {
+    try {
+      sessionStorage.setItem("milanPostLoginReturn", "/milan-pay");
+    } catch (_) {
+      // The saved Cashfree order remains available when session storage works.
+    }
+  });
+
+  cashfreeVerify.addEventListener("click", async () => {
+    const orderId = cashfreeOrderId ||
+      sessionStorage.getItem("milanCashfreeOrderId") || "";
+
+    if (!orderId || cashfreeBusy) {
+      setStatus("No saved Cashfree order is available to verify.", true);
+      return;
+    }
+
+    await verifyCashfreeOrder(orderId);
+  });
+
+
+  Promise.allSettled([loadConfig(), loadCashfreeConfig()])
+    .then(async ([upiResult, cashfreeResult]) => {
+      if (upiResult.status === "fulfilled") {
+        const config = upiResult.value;
+        ready = config.upiAvailable === true;
+      } else {
+        ready = false;
+      }
+
+      if (cashfreeResult.status === "fulfilled") {
+        const config = cashfreeResult.value;
+        cashfreeReady =
+          config.enabled === true &&
+          ["sandbox", "production"].includes(config.environment);
+
+        cashfreeEnvironment = cashfreeReady ? config.environment : "";
+
+        cashfreePanel.hidden =
+          !cashfreeReady &&
+          !cashfreeReturnOrderId &&
+          !sessionStorage.getItem("milanCashfreeOrderId");
+
+        if (cashfreeReady) {
+          cashfreePanel.hidden = false;
+          cashfreePay.textContent = token()
+            ? "Pay securely with Cashfree"
+            : "Log in to pay securely";
+          setCashfreeLoginState();
+        } else {
+          cashfreePay.disabled = true;
+          cashfreePay.textContent = "Cashfree unavailable";
+        }
+      } else {
+        cashfreeReady = false;
+        cashfreePanel.hidden =
+          !cashfreeReturnOrderId &&
+          !sessionStorage.getItem("milanCashfreeOrderId");
+        cashfreePay.disabled = true;
+        cashfreePay.textContent = "Cashfree unavailable";
+      }
+
+      const availableMethods = [];
+      if (ready) availableMethods.push("UPI");
+      if (cashfreeReady) availableMethods.push("Cashfree");
+
+      railStatus.textContent = availableMethods.length
+        ? "MILAN Pay · " + availableMethods.join(" + ") + " available"
+        : "No payment method is currently configured";
+
+      const restoredCashfree = await restoreCashfreeOrder();
+      if (restoredCashfree) return;
+
+      if (ready) {
+        const restoredUpi = await restorePendingOrder();
+        if (restoredUpi) return;
+
+        pay.disabled = false;
+        pay.textContent = token()
+          ? "Create UPI payment"
+          : "Login to pay with MILAN Pay";
+      } else {
+        pay.disabled = true;
+        pay.textContent = "UPI not configured";
+      }
+
+      if (!ready && !cashfreeReady) {
+        setStatus("No payment method is currently available. Please try again later.", true);
+      } else if (!token() && cashfreeReady) {
+        setStatus("Log in to use secure Cashfree checkout.");
+      }
+    })
+    .catch(() => {
+      ready = false;
+      cashfreeReady = false;
+      pay.disabled = true;
+      cashfreePay.disabled = true;
+      cashfreePay.textContent = "Payments unavailable";
+      railStatus.textContent = "Payment setup unavailable";
+      setStatus("Payment setup could not be checked. Please retry later.", true);
+    });
+})();
+</script>
+</body>
+</html>

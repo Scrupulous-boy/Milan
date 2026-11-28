@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Decentralized Web Node (DWN) | How MILAN Uses DWN</title>
+  <meta name="description" content="Learn what a Decentralized Web Node (DWN) is, how DWN relates to DID, and how MILAN uses a user-centered DWN data layer for decentralized social networking.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  <link rel="canonical" href="https://milanlife.in/decentralized-web-node">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="MILAN">
+  <meta property="og:title" content="Decentralized Web Node (DWN) | How MILAN Uses DWN">
+  <meta property="og:description" content="A practical guide to Decentralized Web Nodes, DID identity and the DWN-oriented architecture behind MILAN.">
+  <meta property="og:url" content="https://milanlife.in/decentralized-web-node">
+  <meta property="og:image" content="https://milanlife.in/assets/og-cover.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="MILAN — Decentralized Social Web.">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Decentralized Web Node (DWN) | How MILAN Uses DWN">
+  <meta name="twitter:description" content="Understand DWN, DID and how MILAN uses a user-centered decentralized data layer for social networking.">
+  <meta name="twitter:image" content="https://milanlife.in/assets/og-cover.png">
+
+  <style>
+    :root{
+      --bg:#050a18;
+      --panel:#0b1430;
+      --panel2:#0d1838;
+      --line:rgba(155,177,255,.16);
+      --text:#eef3ff;
+      --muted:#afbdd8;
+      --brand1:#7a8cff;
+      --brand2:#dd4bc9;
+      --accent:#efb11a;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--text);
+      background:
+        radial-gradient(800px 460px at 10% -5%,rgba(66,99,255,.20),transparent 66%),
+        radial-gradient(760px 500px at 92% 8%,rgba(220,65,201,.13),transparent 64%),
+        var(--bg);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      line-height:1.75;
+    }
+    a{color:#b6c2ff}
+    .wrap{width:min(1100px,calc(100% - 36px));margin:auto;padding:28px 0 80px}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:52px}
+    .brand{display:inline-flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:950;letter-spacing:.16em}
+    .brand img{width:38px;height:38px;border-radius:12px}
+    nav{display:flex;gap:18px;flex-wrap:wrap;justify-content:flex-end}
+    nav a{text-decoration:none;color:var(--muted);font-size:13px;font-weight:800}
+    .crumbs{font-size:13px;color:#8292b8;margin-bottom:20px}
+    .hero{padding:34px 0 46px}
+    .eyebrow{font-size:11px;font-weight:950;letter-spacing:.16em;color:#9caed7;text-transform:uppercase}
+    h1{font-size:clamp(44px,7vw,82px);line-height:.98;letter-spacing:-.055em;max-width:900px;margin:15px 0 24px}
+    h1 span{background:linear-gradient(90deg,#f0b31c,#dd4bc9,#778cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{font-size:21px;color:#c9d3e8;max-width:900px}
+    .hero-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:18px;margin-top:30px}
+    .panel{border:1px solid var(--line);border-radius:24px;padding:26px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.018));box-shadow:0 24px 60px rgba(0,0,0,.22)}
+    .panel h2{margin:0 0 12px;font-size:29px;line-height:1.15}
+    .chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+    .chip{padding:7px 10px;border:1px solid var(--line);border-radius:999px;color:#cdd6ea;background:rgba(255,255,255,.025);font-size:12px;font-weight:800}
+    .signal{display:grid;gap:11px}
+    .signal div{padding:14px 15px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025)}
+    .signal b{display:block;font-size:12px;letter-spacing:.05em}
+    .signal span{display:block;color:#8fa0c4;font-size:12px;margin-top:3px}
+    main{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:24px;align-items:start}
+    article{min-width:0}
+    .toc{position:sticky;top:20px}
+    .toc a{display:block;text-decoration:none;color:#9faed0;font-size:13px;padding:7px 0}
+    section{scroll-margin-top:20px}
+    h2{font-size:34px;line-height:1.15;letter-spacing:-.025em;margin:52px 0 12px}
+    h3{font-size:21px;margin:28px 0 8px}
+    p{color:#c3cee4;font-size:16px}
+    .note{border-left:3px solid var(--accent);padding:8px 16px;background:rgba(239,177,26,.055);border-radius:0 12px 12px 0}
+    .compare{overflow:auto;border:1px solid var(--line);border-radius:18px;margin-top:18px}
+    table{width:100%;border-collapse:collapse;min-width:640px}
+    th,td{padding:14px 15px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+    th{font-size:12px;letter-spacing:.08em;color:#97a9cf}
+    td{font-size:14px;color:#cbd5e8}
+    .faq details{border-top:1px solid var(--line);padding:16px 0}
+    .faq details:last-child{border-bottom:1px solid var(--line)}
+    summary{cursor:pointer;font-weight:850;color:#eef3ff}
+    .refs a{word-break:break-word}
+    .cta{margin-top:22px;display:inline-flex;align-items:center;padding:13px 18px;border-radius:14px;background:linear-gradient(135deg,var(--brand1),var(--brand2));color:#fff;text-decoration:none;font-weight:950}
+    footer{margin-top:66px;color:#7787aa;font-size:13px;border-top:1px solid var(--line);padding-top:22px}
+    @media(max-width:800px){
+      .top{align-items:flex-start}.hero-grid,main{grid-template-columns:1fr}.toc{position:static;order:-1}
+    }
+    @media(max-width:560px){
+      .wrap{width:min(100% - 24px,1100px)}.panel{padding:20px}.lead{font-size:18px}h2{font-size:29px}
+      nav{gap:11px}.top{flex-direction:column}
+    }
+
+    /* PAGE-SCOPED MOBILE READABILITY FIX — 2026-10-16 */
+    html, body { max-width: 100%; }
+    body { overflow-x: clip; overflow-wrap: break-word; }
+    .wrap, .hero, .hero-grid, main, article, .panel, .toc, .signal, .compare {
+      min-width: 0;
+    }
+    .hero { overflow: visible; }
+    h1, h2, h3, p, li, summary, td, th, .eyebrow, .lead, .chip,
+    .signal span, .toc a, .crumbs {
+      overflow-wrap: anywhere;
+    }
+    img, svg, video, iframe { max-width: 100%; }
+    @media (max-width: 560px) {
+      .wrap { width: calc(100% - 24px); padding-top: 18px; }
+      .hero { padding: 24px 0 30px; }
+      h1 {
+        font-size: clamp(2rem, 10.5vw, 3.25rem);
+        line-height: 1.08;
+        letter-spacing: -.035em;
+      }
+      .lead { font-size: 17px; line-height: 1.65; }
+      .hero-grid, main { grid-template-columns: minmax(0, 1fr); }
+      .panel { padding: 16px; }
+      .panel h2, h2 {
+        font-size: clamp(1.4rem, 6.5vw, 1.8rem);
+        line-height: 1.22;
+      }
+      .eyebrow { letter-spacing: .08em; line-height: 1.7; }
+      .chips { align-items: flex-start; }
+      .chip { max-width: 100%; white-space: normal; border-radius: 12px; }
+      nav { justify-content: flex-start; max-width: 100%; gap: 10px 14px; }
+      .cta { max-width: 100%; white-space: normal; }
+      .compare { max-width: 100%; overflow-x: auto; }
+    }
+
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"TechArticle",
+        "@id":"https://milanlife.in/decentralized-web-node#article",
+        "url":"https://milanlife.in/decentralized-web-node",
+        "headline":"Decentralized Web Node (DWN) | How MILAN Uses DWN",
+        "description":"A practical guide to Decentralized Web Nodes, DID identity and the DWN-oriented architecture behind MILAN.",
+        "image":"https://milanlife.in/assets/og-cover.png",
+        "author":{"@id":"https://milanlife.in/#founder"},
+        "publisher":{"@id":"https://milanlife.in/#org"},
+        "isPartOf":{"@id":"https://milanlife.in/#website"},
+        "mainEntityOfPage":"https://milanlife.in/decentralized-web-node",
+        "about":[
+          {"@type":"Thing","@id":"https://milanlife.in/#dwn","name":"Decentralized Web Node"},
+          {"@type":"Thing","@id":"https://milanlife.in/#did","name":"Decentralized Identifier"}
+        ],
+        "keywords":[
+          "Decentralized Web Node","DWN","DWN explained","DWN and DID",
+          "DWN social network","DWN data ownership","Web5 social network"
+        ],
+        "dateModified":"2026-10-08"
+      },
+      {
+        "@type":"BreadcrumbList",
+        "@id":"https://milanlife.in/decentralized-web-node#breadcrumbs",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"MILAN","item":"https://milanlife.in/"},
+          {"@type":"ListItem","position":2,"name":"Decentralized Web Node","item":"https://milanlife.in/decentralized-web-node"}
+        ]
+      },
+      {
+        "@type":"FAQPage",
+        "@id":"https://milanlife.in/decentralized-web-node#faq",
+        "mainEntity":[
+          {
+            "@type":"Question",
+            "name":"What is a Decentralized Web Node (DWN)?",
+            "acceptedAnswer":{"@type":"Answer","text":"A Decentralized Web Node is a data storage and message relay mechanism associated with a decentralized identity. In the DIF specification, DWNs are described as a decentralized personal and application data storage and message relay layer."}
+          },
+          {
+            "@type":"Question",
+            "name":"How is a DWN related to a DID?",
+            "acceptedAnswer":{"@type":"Answer","text":"A DID identifies the entity in a decentralized identity system. A DWN provides a data and message layer associated with that identity, so applications can locate, store and access data without making a traditional platform account the only identity anchor."}
+          },
+          {
+            "@type":"Question",
+            "name":"How does MILAN use DWN?",
+            "acceptedAnswer":{"@type":"Answer","text":"MILAN describes its architecture as a privacy-first decentralized social network built around DID identity and a user-centered DWN data layer. The product uses these primitives as part of its model for identity, storage and permission-aware social sharing."}
+          },
+          {
+            "@type":"Question",
+            "name":"Is the DWN specification finished?",
+            "acceptedAnswer":{"@type":"Answer","text":"The current Decentralized Web Node specification published by the Decentralized Identity Foundation is a draft and is under active development."}
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+
+<style id="dwn-content-visibility-fix">
+  /* DWN CONTENT VISIBILITY OVERRIDE — 2026-10-16
+     Intentionally loaded after shared CSS to protect this page's content. */
+  .wrap,
+  .wrap main,
+  .wrap article,
+  .wrap article > section,
+  .wrap .hero,
+  .wrap .hero-grid,
+  .wrap .panel,
+  .wrap .signal {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  .wrap .hero {
+    overflow: visible !important;
+    clip-path: none !important;
+    contain: none !important;
+  }
+
+  .wrap h1,
+  .wrap h2,
+  .wrap h3,
+  .wrap p,
+  .wrap li,
+  .wrap summary,
+  .wrap td,
+  .wrap th,
+  .wrap .eyebrow,
+  .wrap .lead,
+  .wrap .chip,
+  .wrap .signal span,
+  .wrap .toc a,
+  .wrap .crumbs {
+    max-width: 100% !important;
+    max-height: none !important;
+    height: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+    -webkit-line-clamp: unset !important;
+    line-clamp: unset !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  @media (max-width: 800px) {
+    .wrap .hero-grid,
+    .wrap main {
+      grid-template-columns: minmax(0, 1fr) !important;
+    }
+    .wrap .toc {
+      position: static !important;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .wrap {
+      width: calc(100% - 24px) !important;
+      padding-top: 16px !important;
+    }
+    .wrap .hero {
+      padding: 22px 0 30px !important;
+    }
+    .wrap h1 {
+      font-size: clamp(30px, 8.5vw, 42px) !important;
+      line-height: 1.18 !important;
+      letter-spacing: -.025em !important;
+    }
+    .wrap h2 {
+      font-size: clamp(23px, 6.5vw, 29px) !important;
+      line-height: 1.28 !important;
+      letter-spacing: -.015em !important;
+    }
+    .wrap h3 {
+      font-size: 20px !important;
+      line-height: 1.35 !important;
+    }
+    .wrap p,
+    .wrap li {
+      font-size: 16px !important;
+      line-height: 1.75 !important;
+    }
+    .wrap .lead {
+      font-size: 17px !important;
+      line-height: 1.7 !important;
+    }
+    .wrap .hero-grid,
+    .wrap main {
+      gap: 16px !important;
+    }
+    .wrap .panel {
+      padding: 16px !important;
+    }
+    .wrap .compare {
+      max-width: 100% !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+</style>
+
+
+  <!-- MILAN cross-browser favicon and app identity -->
+  
+  <!-- MILAN cross-browser favicon and app identity -->
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png?v=20261108-brand1">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261108-brand1" sizes="any">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20261108-brand1" sizes="any">
+  <link rel="shortcut icon" href="/favicon.ico?v=20261108-brand1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20261108-brand1">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=20261108-brand1" color="#050e2b">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#050e2b">
+  <meta name="application-name" content="MILAN">
+  <meta name="apple-mobile-web-app-title" content="MILAN">
+  <meta name="msapplication-TileColor" content="#050e2b">
+  <meta name="msapplication-config" content="/browserconfig.xml?v=20261108-brand1">
+<link rel="stylesheet" href="/milan.css?v=20261127"><style id="mobile-fix">
+html:root:root{position:static!important;inset:auto!important;width:100%!important;height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch}
+html:root:root body:not(.zz){position:static!important;inset:auto!important;height:auto!important;min-height:100vh!important;min-height:100dvh!important;overflow:visible!important;touch-action:pan-y;overscroll-behavior-y:auto;padding-bottom:env(safe-area-inset-bottom)}
+html:root:root body:not(.zz).milan-drawer-open,html:root:root body:not(.zz).milan-mobile-menu-open{overflow:hidden!important}
+@media (max-width:780px){html:root:root #root,html:root:root #app,html:root:root .milan-container,html:root:root .hero-panel,html:root:root .login-card,html:root:root main,html:root:root .container,html:root:root .wrapper,html:root:root .page{height:auto!important;max-height:none!important;overflow:visible!important}}
+img,video,canvas,svg,table{max-width:100%}
+pre{max-width:100%;overflow-x:auto}
+</style>
+<style id="mobile-ui">
+@media (max-width:780px){
+:root{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+:root body{font-size:16px;line-height:1.65;overflow-wrap:break-word}
+:root body h1{font-size:clamp(1.65rem,7vw,2.2rem);line-height:1.2;letter-spacing:-.01em;margin:0 0 .6em}
+:root body h2{font-size:clamp(1.35rem,5.6vw,1.75rem);line-height:1.25;margin:1.4em 0 .5em}
+:root body h3{font-size:clamp(1.12rem,4.6vw,1.3rem);line-height:1.3;margin:1.2em 0 .4em}
+:root body p,:root body li{font-size:1rem;line-height:1.65}
+:root body p{margin:0 0 1em}
+:root body ul,:root body ol{padding-left:1.25em}
+:root body :is(p,li,td,th,a,code,span){overflow-wrap:anywhere}
+:root body :is(main,.container,.wrap,.wrapper){width:100%;max-width:100%;box-sizing:border-box;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+:root body :is(section,article,div,header,footer,nav,aside){min-width:0}
+:root body :is(.grid,.cards,.card-grid,.compare-grid){grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+:root body table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+:root body :is(img,video,canvas,svg){max-width:100%;height:auto}
+:root body iframe{max-width:100%}
+:root body pre{white-space:pre-wrap;word-break:break-word;max-width:100%;overflow-x:auto}
+:root body :is(.btn,.button,.cta){min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+}
+</style>
+<style id="mobile-ui2">@media (max-width:780px){
+:root .eyebrow,:root .chip,:root .signal b,:root .signal span,:root th{font-size:13px!important}
+}</style>
+<style id="mobile-ui3">@media (max-width:780px){
+:root .hero-grid,:root main{grid-template-columns:minmax(0,1fr)!important}
+:root .toc{position:static!important}
+#milan-mic-btn,#milan-fab,#milan-ptr,.milan-cmd-shortcut{display:none!important}
+}</style>
+<style id="mobile-ui4">
+html:root:root body:not(.zz){display:block!important;flex-direction:initial!important;align-items:normal!important;justify-content:normal!important;padding:0!important}
+</style>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<script src="/pwa-install.js?v=20261127f"></script>
+<style id="dwn-nav-fix">
+.dwn-bar{position:sticky;top:0;z-index:1000;background:rgba(5,10,24,.86);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid rgba(155,177,255,.16)}
+.dwn-bar-in{max-width:1100px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:relative}
+.dwn-brand{display:inline-flex;align-items:center;gap:10px;color:#fff!important;text-decoration:none;font-weight:900;letter-spacing:.18em;font-size:17px}
+.dwn-brand img{width:40px;height:40px;border-radius:50%;object-fit:cover;display:block}
+.dwn-nav{display:flex;align-items:center;gap:4px}
+.dwn-nav a{padding:8px 13px;border-radius:999px;color:#c3cee4;font-weight:700;font-size:14px;text-decoration:none;line-height:1.2;white-space:nowrap}
+.dwn-nav a:hover,.dwn-nav a[aria-current]{background:rgba(255,255,255,.09);color:#fff}
+.dwn-nav a.dwn-cta{background:linear-gradient(135deg,#f59e0b,#d946ef);color:#fff;margin-left:6px;font-weight:800}
+.dwn-burger{display:none;width:42px;height:42px;border:1px solid rgba(155,177,255,.25);border-radius:12px;background:rgba(255,255,255,.05);color:#fff;place-items:center;cursor:pointer;padding:0}
+@media(max-width:820px){
+  .dwn-burger{display:grid}
+  .dwn-nav{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:4px;padding:10px 14px 16px;background:rgba(5,10,24,.98);border-bottom:1px solid rgba(155,177,255,.16);box-shadow:0 18px 40px rgba(0,0,0,.5)}
+  .dwn-bar.open .dwn-nav{display:flex}
+  .dwn-nav a{padding:13px 14px;font-size:16px;border-radius:12px;white-space:normal}
+  .dwn-nav a.dwn-cta{margin:6px 0 0;text-align:center}
+}
+html body .wrap{padding-top:22px!important}
+html body .wrap .hero{border:0!important;background:none!important;box-shadow:none!important;border-radius:0!important;text-align:center!important;padding:28px 0 36px!important}
+html body .wrap .crumbs{text-align:center!important;margin-bottom:8px!important}
+html body .wrap .hero .eyebrow{text-align:center!important;display:block!important;padding:0 8px!important}
+html body .wrap .hero h1{text-align:center!important;margin:14px auto 20px!important;max-width:900px!important;overflow-wrap:break-word!important}
+html body .wrap .hero .lead{text-align:center!important;margin:0 auto!important;max-width:780px!important;padding:0 8px!important}
+html body .wrap .hero-grid{margin-top:34px!important}
+html body .wrap .hero-grid .panel{padding:26px 22px!important;text-align:center!important}
+html body .wrap .hero-grid .chips{justify-content:center!important}
+html body .wrap .hero-grid .signal div{text-align:center!important}
+html body .wrap .toc{top:84px!important}
+html body .wrap section{scroll-margin-top:84px!important}
+.dwn-foot{max-width:1100px;margin:60px auto 0;border-top:1px solid rgba(155,177,255,.16);padding:28px 0 8px;text-align:center;color:#7787aa;font-size:13px}
+.dwn-foot-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 20px;margin-bottom:16px}
+.dwn-foot-links a{color:#b6c2ff;text-decoration:none;font-weight:700;font-size:14px}
+@media(max-width:560px){
+  html body .wrap .hero h1{font-size:clamp(32px,9.5vw,44px)!important;line-height:1.12!important}
+  html body .wrap .hero-grid .panel{padding:22px 16px!important}
+  .dwn-bar-in{padding:8px 14px}
+}
+</style>
+</head>
+<body>
+<div class="dwn-bar" id="dwnBar" role="banner">
+  <div class="dwn-bar-in">
+    <a class="dwn-brand" href="/" aria-label="MILAN home"><img src="/assets/milan-logo-circle.png" alt="MILAN logo"><span>MILAN</span></a>
+    <button class="dwn-burger" id="dwnBurger" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <div class="dwn-nav" role="navigation" aria-label="Primary navigation">
+      <a href="/">Home</a>
+      <a href="/decentralized-social-media">Social network</a>
+      <a href="/what-is-web5">Web5</a>
+      <a href="/decentralized-web-node" aria-current="page">DWN</a>
+      <a href="/social-media-privacy">Privacy</a>
+      <a href="/about">About</a>
+      <a class="dwn-cta" href="/app">Enter MILAN</a>
+    </div>
+  </div>
+</div>
+<div class="wrap">
+  <div class="crumbs"><a href="/">Home</a> › Decentralized Web Node</div>
+
+  <section class="hero">
+    <div class="eyebrow">DWN · DID · WEB5 · USER-CONTROLLED DATA</div>
+    <h1>Decentralized Web Node <span>(DWN)</span></h1>
+    <p class="lead">A practical guide to the data layer behind decentralized applications — and to how MILAN uses DWN concepts in a social network built around user-controlled identity and data.</p>
+
+    <div class="hero-grid">
+      <div class="panel">
+        <h2>The simple model</h2>
+        <p><strong>DID</strong> answers “who is the user?” A <strong>DWN</strong> answers “where can an application interact with that user's decentralized data and messages?” MILAN connects those primitives to a social experience.</p>
+        <div class="chips">
+          <span class="chip">Decentralized identity</span>
+          <span class="chip">User-centered data</span>
+          <span class="chip">Permission-aware sharing</span>
+          <span class="chip">Social application</span>
+        </div>
+      </div>
+      <div class="panel signal">
+        <div><b>01 · DID</b><span>Identity layer</span></div>
+        <div><b>02 · DWN</b><span>Data + message layer</span></div>
+        <div><b>03 · MILAN</b><span>Social experience</span></div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <article>
+      <section id="what-is-dwn">
+        <h2>What is a Decentralized Web Node?</h2>
+        <p>A Decentralized Web Node (DWN) is a data storage and message relay mechanism used to locate and exchange public or private permissioned data related to a decentralized identity. The Decentralized Identity Foundation (DIF) publishes the DWN specification as a draft technical specification for this model.</p>
+        <p>The important idea is that a user's data does not have to be defined only by the URL of one company's database. A DWN provides an application-facing interface for data and messages associated with an identity, with authorization rules and protocols describing who can perform which actions.</p>
+        <p class="note"><strong>Specification note:</strong> The DIF DWN specification is currently a draft. This page explains the concept and describes MILAN's product architecture; it is not a replacement for the specification.</p>
+      </section>
+
+      <section id="dwn-vs-database">
+        <h2>DWN vs. a traditional centralized database</h2>
+        <div class="compare">
+          <table>
+            <thead><tr><th>Area</th><th>Traditional social platform</th><th>DWN-oriented model</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Identity</strong></td><td>Usually a platform account is the primary anchor.</td><td>A decentralized identity can be treated as a separate identity layer.</td></tr>
+              <tr><td><strong>Data</strong></td><td>Application data is commonly centered on the platform's database.</td><td>Applications can interact with data associated with a user's decentralized node.</td></tr>
+              <tr><td><strong>Permissions</strong></td><td>Access rules are defined inside the service.</td><td>DWN protocols can describe roles, actions and authorization rules for records.</td></tr>
+              <tr><td><strong>Portability</strong></td><td>Moving data often depends on platform export tools.</td><td>The architecture is designed to separate data and identity from a single application endpoint.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="dwn-did">
+        <h2>DWN and DID: how they fit together</h2>
+        <p>A <a href="https://www.w3.org/TR/did-core/" rel="nofollow">Decentralized Identifier (DID)</a> is an identifier designed for decentralized identity systems. DID Core defines the DID syntax, data model, core properties and resolution model.</p>
+        <p>A DWN works at a different layer: it is about data and message storage/relay. In a decentralized application, the identity layer and data layer can therefore be connected without making them the same thing.</p>
+        <div class="panel">
+          <p><strong>Think of it as:</strong> DID = identity anchor. DWN = data and message layer. Application = the experience that uses both.</p>
+        </div>
+      </section>
+
+      <section id="milan">
+        <h2>How MILAN uses DWN</h2>
+        <p><strong>MILAN</strong> is a privacy-first decentralized social network. Its public product pages describe a model where users have a decentralized identity and a user-centered data layer based on Decentralized Web Nodes.</p>
+        <h3>Identity</h3>
+        <p>MILAN uses decentralized identity concepts, including DID-based identity, as a foundation for user accounts and identity-aware sharing.</p>
+        <h3>Data</h3>
+        <p>MILAN's architecture is designed around a per-user data space rather than treating the social feed as the only home of a user's content. Posts, media and other records are handled according to the access model chosen by the user.</p>
+        <h3>Sharing</h3>
+        <p>MILAN's privacy documentation describes private, public and DID-based sharing modes. The practical product goal is to make access decisions explicit instead of making every social interaction public by default.</p>
+        <p>Read the product's <a href="/privacy">Privacy Policy</a> for the current storage and sharing claims, or explore the <a href="/decentralized-social-media">Decentralized Social Network</a> page for the wider application architecture.</p>
+      </section>
+
+      <section id="why-it-matters">
+        <h2>Why DWN matters for social networking</h2>
+        <p>DWN changes the architectural question from “Which platform stores my social data?” toward “Which applications can interact with data associated with my identity, and under what rules?” That distinction is useful when designing privacy-first social products.</p>
+        <p>For MILAN, this supports a product thesis: social networking can remain familiar to users while the underlying relationship between identity, data and permissions is made more explicit.</p>
+      </section>
+
+      <section id="references" class="refs">
+        <h2>Primary technical references</h2>
+        <p><a href="https://identity.foundation/decentralized-web-node/spec/" rel="nofollow">DIF Decentralized Web Node specification</a> — the current draft specification for DWN.</p>
+        <p><a href="https://identity.foundation/decentralized-web-node/guide/" rel="nofollow">DIF Decentralized Web Node Companion Guide</a> — a non-normative implementation-oriented guide.</p>
+        <p><a href="https://www.w3.org/TR/did-core/" rel="nofollow">W3C DID Core</a> — the W3C specification for Decentralized Identifiers.</p>
+      </section>
+
+      <section id="faq" class="faq">
+        <h2>Frequently asked questions</h2>
+        <details open><summary>What is a Decentralized Web Node?</summary><p>A DWN is a decentralized data storage and message relay layer used with decentralized identity systems.</p></details>
+        <details><summary>How is DWN related to DID?</summary><p>DID provides an identity layer; DWN provides a data and message layer associated with that identity.</p></details>
+        <details><summary>How does MILAN use DWN?</summary><p>MILAN describes its social architecture around DID identity, a user-centered DWN data layer and permission-aware sharing.</p></details>
+        <details><summary>Is the DIF DWN specification final?</summary><p>No. The current DIF DWN specification is published as a draft and is under active development.</p></details>
+      </section>
+
+      <a class="cta" href="/app">Enter MILAN →</a>
+    </article>
+
+    <aside class="toc panel" aria-label="On this page">
+      <strong>On this page</strong>
+      <a href="#what-is-dwn">What is DWN?</a>
+      <a href="#dwn-vs-database">DWN vs database</a>
+      <a href="#dwn-did">DWN + DID</a>
+      <a href="#milan">How MILAN uses DWN</a>
+      <a href="#why-it-matters">Why it matters</a>
+      <a href="#references">Technical references</a>
+      <a href="#faq">FAQ</a>
+    </aside>
+  </main>
+
+  <div class="dwn-foot" role="contentinfo">
+  <div class="dwn-foot-links">
+    <a href="/">Home</a><a href="/decentralized-social-media">Social network</a><a href="/what-is-web5">Web5</a><a href="/decentralized-web-node">DWN</a><a href="/social-media-privacy">Privacy</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms</a><a href="/app">Enter MILAN</a>
+  </div>
+  <div>© 2026 MILAN · Decentralized Social Web</div>
+</div>
+</div>
+<script src="/milan.js?v=20261127g" defer></script><script>(function(){var b=document.getElementById("dwnBar"),t=document.getElementById("dwnBurger");if(!b||!t)return;t.addEventListener("click",function(){var o=b.classList.toggle("open");t.setAttribute("aria-expanded",o?"true":"false");});b.addEventListener("click",function(e){if(e.target.closest&&e.target.closest(".dwn-nav a"))b.classList.remove("open");});document.addEventListener("keydown",function(e){if(e.key==="Escape")b.classList.remove("open");});})();</script>
+</body>
+</html>

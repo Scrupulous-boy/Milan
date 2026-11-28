@@ -1,0 +1,47 @@
+# MILAN — crawler policy
+# https://milanlife.in
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /admin-users
+Disallow: /settings
+Disallow: /account/
+Disallow: /verify-email
+Disallow: /reset-password
+Disallow: /forgot-password
+Disallow: /launch.html
+
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+Host: milanlife.in
+Sitemap: https://milanlife.in/sitemap.xml

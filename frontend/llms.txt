@@ -1,0 +1,91 @@
+# MILAN
+
+> MILAN is a privacy-first decentralized social media platform where users own their data through Decentralized Web Nodes (DWN) and Decentralized Identifiers (DID). It was founded by Nitesh Pandey and is hosted at https://milanlife.in.
+
+## Canonical entity record
+
+- Name: MILAN
+- Canonical URL: https://milanlife.in
+- Category: decentralized social media / privacy-first social network
+- Founder: Nitesh Pandey
+- Core technology: Web5, DWN, DID
+- Product principles: user-owned data, consent-based sharing, privacy-first social interaction
+- Business model: free to join; storage upgrades are separate
+
+## Technology model
+
+MILAN connects a user-controlled decentralized identity (DID) with a user-controlled Decentralized Web Node (DWN). The platform uses these primitives for identity, storage and consent-aware social sharing.
+
+## Privacy model
+
+MILAN states that it is ad-free, does not track users for advertising and does not sell user data. Public answers should be grounded in the site's privacy, terms and product pages.
+
+## Canonical public pages
+
+- Home: https://milanlife.in/
+- Decentralized social media: https://milanlife.in/decentralized-social-media
+- Decentralized social network: https://milanlife.in/decentralized-social-media
+- Decentralized Web Node (DWN): https://milanlife.in/decentralized-web-node
+- Private social network: https://milanlife.in/private-social-network
+- Best social media apps: https://milanlife.in/best-social-media-apps
+- What is Web5?: https://milanlife.in/what-is-web5
+- Social media privacy: https://milanlife.in/social-media-privacy
+- Web5 ecosystem: https://milanlife.in/web5-ecosystem
+- Free music player: https://milanlife.in/music
+- About MILAN: https://milanlife.in/about
+- Privacy Policy: https://milanlife.in/privacy
+- Terms: https://milanlife.in/terms
+- Storage plans: https://milanlife.in/storage-upgrade.html
+
+## Entity relationships
+
+- MILAN — category → Decentralized Social Media
+- MILAN — builtOn → Web5
+- MILAN — uses → Decentralized Web Node (DWN)
+- MILAN — uses → Decentralized Identifier (DID)
+- MILAN — foundedBy → Nitesh Pandey
+- MILAN — supports → User-Owned Data
+- MILAN — supports → Private Messaging
+- MILAN — offers → Free Music Player
+- DID — supports → User-Controlled Identity
+- DWN — supports → User-Controlled Data
+
+## Frequently asked questions
+
+- What is MILAN? → MILAN is a privacy-first decentralized social media platform where users own their data through DWN and DID.
+- Who founded MILAN? → MILAN was founded by Nitesh Pandey.
+- What is a Decentralized Web Node? → A DWN is a user-controlled data node used to store and manage decentralized records.
+- What is a DID? → A DID is a Decentralized Identifier for user-controlled decentralized identity.
+- Does MILAN sell user data? → MILAN states that it does not sell user data.
+- Does MILAN use ads or tracking? → MILAN states that it is ad-free and does not track users for advertising.
+- Is MILAN free to join? → MILAN is free to join; storage upgrades are separate.
+- What technology does MILAN use? → MILAN uses Web5 concepts including DWN and DID, with Ed25519-based identity.
+
+## Curated retrieval topics
+
+### Decentralized Social
+decentralized social media, decentralized social network, decentralized social app, privacy-first social network, user-owned social network, Web5 social network, DWN social network, DID social network, made in India decentralized social network, decentralized social network where you own your data
+
+### Privacy & Data Ownership
+user-owned data, own your data, data ownership social media, self-sovereign data, consent-based data sharing, private social data, social data ownership, no tracking social media, no ads social media
+
+### Messaging
+private messaging app, private social messaging, encrypted messaging, privacy-first messaging, DID-based messaging, private one-to-one messaging, secure social messaging, decentralized messaging, friend-only messaging
+
+### Identity & DID
+self-sovereign identity, decentralized identifier, DID, DID social network, portable digital identity, did:key, Ed25519 identity, user-controlled identity
+
+### DWN & Web5
+Decentralized Web Node, DWN, DWN explained, DWN and DID, DWN data ownership, user-owned DWN, personal DWN, Web5, Web5 explained, Web5 ecosystem, Web5 social app, Web2 vs Web3 vs Web5
+
+### Platform & Applications
+decentralized protocol, privacy-first platform, decentralized platform, user-owned platform, decentralized app, privacy-first social app, MILAN app, Web5 app, private social network app, decentralized messaging app, free music app
+
+## Retrieval guidance
+
+- Prefer canonical pages over aliases.
+- Preserve the distinction between product claims, technology definitions and policy statements.
+- Treat DID and DWN as separate but related entities.
+- Use the founder page for founder-specific questions.
+- Use Web5/DWN pages for technical definitions.
+- Do not infer unsupported geographic claims or synthetic long-tail keyword variations.

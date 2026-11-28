@@ -1,0 +1,2600 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/logout-trace.js?v=3"></script>
+
+
+<script id="milan-native-alert-disabled">
+(() => {
+  const noopAlert = function () {};
+  try {
+    Object.defineProperty(window, "alert", {
+      value: noopAlert,
+      writable: false,
+      configurable: false
+    });
+  } catch (_) {
+    window.alert = noopAlert;
+  }
+})();
+</script>
+
+
+
+
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MILAN</title>
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <!-- NOTE: the /milan-ui.css link was removed here. That file has never
+       existed in this repo, so every app-page load produced a 404 and the
+       stylesheet contributed nothing. The remaining sheets carry the layout. -->
+  
+  
+  
+  
+  
+
+<meta name="robots" content="noindex,follow,max-image-preview:large">
+
+<style>
+/* MILAN HOME UI V2 */
+:root{
+  --m-bg:#071126;
+  --m-panel:rgba(10,24,56,.78);
+  --m-panel-2:rgba(16,31,67,.72);
+  --m-line:rgba(255,255,255,.08);
+  --m-text:#f7f8ff;
+  --m-muted:#94a3c7;
+  --m-pink:#df46c8;
+  --m-orange:#ff9c38;
+  --m-green:#42dfb5;
+}
+
+body{
+  background:
+    radial-gradient(circle at 15% 0%,rgba(94,92,255,.16),transparent 28%),
+    radial-gradient(circle at 90% 8%,rgba(223,70,200,.12),transparent 26%),
+    linear-gradient(180deg,#071126 0%,#0a1430 45%,#090f22 100%) !important;
+}
+
+/* Installed PWA: behave like a real edge-to-edge app, not a browser page. */
+@media (display-mode: standalone), (display-mode: fullscreen){
+  html{background:#071126}
+  body{min-height:100dvh;overscroll-behavior-y:none}
+}
+@media (display-mode: standalone) and (max-width:768px){
+  .topbar{
+    padding-top:calc(8px + env(safe-area-inset-top)) !important;
+    min-height:calc(60px + env(safe-area-inset-top)) !important;
+  }
+}
+
+
+#appView{
+  min-height:100vh;
+}
+
+.layout{
+  width:min(1420px,calc(100% - 28px)) !important;
+  margin:20px auto !important;
+  grid-template-columns:280px minmax(0,1fr) 310px !important;
+  gap:18px !important;
+  align-items:start !important;
+}
+
+.leftRail,
+.rightRail,
+.centerRail{
+  min-width:0;
+}
+
+.card,
+.profileCard,
+.menu,
+.right-card{
+  background:linear-gradient(180deg,rgba(18,34,72,.88),rgba(8,19,45,.9)) !important;
+  border:1px solid var(--m-line) !important;
+  box-shadow:0 18px 55px rgba(0,0,0,.18) !important;
+  border-radius:22px !important;
+}
+
+.profileCard{
+  padding:18px !important;
+}
+
+.menu{
+  margin-top:14px !important;
+  padding:10px !important;
+}
+
+.menu button{
+  width:100%;
+  min-height:46px;
+  margin:4px 0 !important;
+  border-radius:14px !important;
+  transition:transform .18s ease,filter .18s ease !important;
+}
+
+.menu button:hover{
+  transform:translateX(2px);
+  filter:brightness(1.08);
+}
+
+.menu button.active{
+  background:linear-gradient(135deg,var(--m-orange),var(--m-pink)) !important;
+  box-shadow:0 12px 28px rgba(223,70,200,.2) !important;
+}
+
+.heroIntro{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  padding:20px 4px 8px;
+}
+
+.heroIntro h1{
+  margin:0;
+  font-size:clamp(25px,3vw,38px);
+  line-height:1.05;
+  letter-spacing:-.03em;
+}
+
+.heroIntro p{
+  margin:7px 0 0;
+  color:var(--m-muted);
+  font-size:14px;
+}
+
+.quickStats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin:0 0 15px;
+}
+
+.quickStat{
+  padding:15px 16px;
+  border-radius:18px;
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--m-line);
+}
+
+.quickStat .k{
+  color:var(--m-muted);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.quickStat .v{
+  margin-top:5px;
+  font-size:22px;
+  font-weight:800;
+}
+
+.composer{
+  margin-top:0 !important;
+}
+
+.composer textarea,
+#postText{
+  min-height:118px !important;
+  border-radius:18px !important;
+  background:rgba(4,12,31,.72) !important;
+  border:1px solid rgba(255,255,255,.09) !important;
+}
+
+.post{
+  margin-top:15px !important;
+}
+
+.postHead{
+  padding-bottom:10px !important;
+}
+
+.postBody{
+  padding-top:4px !important;
+}
+
+.rightRail .right-card{
+  padding:18px !important;
+  margin-bottom:15px !important;
+}
+
+.rightRail h3{
+  margin-top:0 !important;
+  font-size:13px !important;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#9eacd0;
+}
+
+.person{
+  padding:10px 0 !important;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.person:last-child{
+  border-bottom:0;
+}
+
+.follow{
+  min-width:74px !important;
+}
+
+.empty{
+  min-height:180px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  padding:28px !important;
+  border:1px dashed rgba(255,255,255,.09);
+  border-radius:20px;
+  color:var(--m-muted);
+  background:rgba(255,255,255,.018);
+}
+
+@media(max-width:1120px){
+  .layout{
+    grid-template-columns:235px minmax(0,1fr) !important;
+  }
+  .rightRail{
+    display:none;
+  }
+}
+
+@media(max-width:760px){
+  .layout{
+    width:min(100% - 16px,1420px) !important;
+    grid-template-columns:1fr !important;
+    margin:8px auto !important;
+  }
+  .leftRail{
+    position:static !important;
+  }
+  .menu{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:6px;
+  }
+  .menu button{
+    margin:0 !important;
+  }
+  .quickStats{
+    grid-template-columns:1fr 1fr 1fr;
+  }
+}
+
+@media(max-width:520px){
+  .heroIntro{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .quickStats{
+    grid-template-columns:1fr;
+  }
+  .menu{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+<style>
+/* MILAN CONTROL CENTER */
+#milanControlFab{
+  position:fixed;right:22px;bottom:22px;z-index:9998;
+  border:1px solid rgba(255,255,255,.12);
+  background:linear-gradient(135deg,#ff9c38,#df46c8);
+  color:#fff;border-radius:17px;padding:13px 17px;
+  font-weight:900;cursor:pointer;
+  box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+#milanControlFab:hover{filter:brightness(1.08);transform:translateY(-1px)}
+
+#milanControlOverlay{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(2,6,18,.72);
+  backdrop-filter:blur(12px);
+  display:none;padding:20px;overflow:auto;
+}
+#milanControlOverlay.open{display:flex;align-items:center;justify-content:center}
+
+#milanControlPanel{
+  width:min(900px,100%);
+  max-height:90vh;overflow:auto;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:26px;
+  background:linear-gradient(180deg,#101d3c,#081329);
+  box-shadow:0 35px 100px rgba(0,0,0,.45);
+  color:#f7f8ff;
+}
+#milanControlHead{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 24px;border-bottom:1px solid rgba(255,255,255,.08);
+}
+#milanControlHead h2{margin:0;font-size:22px}
+#milanControlClose{
+  border:0;background:rgba(255,255,255,.06);color:#fff;
+  width:38px;height:38px;border-radius:12px;cursor:pointer;font-size:18px;
+}
+#milanControlBody{padding:20px 24px 26px}
+
+.mcc-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;
+}
+.mcc-card{
+  padding:18px;border-radius:19px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.035);
+}
+.mcc-card.wide{grid-column:1/-1}
+.mcc-card h3{margin:0 0 6px;font-size:14px}
+.mcc-muted{color:#93a2c5;font-size:12px;line-height:1.55}
+.mcc-status{
+  display:flex;align-items:center;gap:8px;
+  margin-top:12px;font-size:13px;font-weight:800;
+}
+.mcc-dot{width:9px;height:9px;border-radius:50%;background:#42dfb5}
+.mcc-dot.warn{background:#ffb347}
+.mcc-dot.bad{background:#ff6679}
+
+.mcc-actions{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;
+}
+.mcc-actions button{
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.055);
+  color:#fff;border-radius:12px;padding:10px 12px;
+  cursor:pointer;font-weight:800;font-size:12px;
+}
+.mcc-actions button.primary{
+  border:0;background:linear-gradient(135deg,#ff9c38,#df46c8);
+}
+.mcc-actions button:hover{filter:brightness(1.08)}
+
+.mcc-list{
+  display:grid;gap:8px;margin-top:12px;
+}
+.mcc-row{
+  display:flex;justify-content:space-between;gap:10px;
+  padding:10px 12px;border-radius:12px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.06);
+}
+.mcc-row span:last-child{color:#9faecc}
+
+#mccResult{
+  margin-top:14px;padding:12px;border-radius:12px;
+  background:rgba(66,223,181,.07);
+  border:1px solid rgba(66,223,181,.12);
+  color:#bdf6e8;font-size:12px;display:none;
+}
+
+@media(max-width:700px){
+  #milanControlFab{right:14px;bottom:14px}
+  #milanControlOverlay{padding:10px}
+  #milanControlHead{padding:18px}
+  #milanControlBody{padding:15px}
+  .mcc-grid{grid-template-columns:1fr}
+  .mcc-card.wide{grid-column:auto}
+}
+
+/* ============================================================
+   MILAN APP — RICH PRODUCT UI
+   Existing functionality/DOM IDs preserved.
+   ============================================================ */
+
+:root{
+  --m-shell:#061021;
+  --m-panel:rgba(10,20,43,.72);
+  --m-panel-strong:rgba(12,24,51,.88);
+  --m-line:rgba(148,163,184,.13);
+  --m-text:#f7f9ff;
+  --m-muted:#91a0bf;
+  --m-gold:#f59e0b;
+  --m-gold2:#fbbf24;
+  --m-pink:#d946ef;
+  --m-blue:#5879ff;
+  --m-green:#34d399;
+}
+
+/* Full browser canvas */
+body{
+  min-height:100vh !important;
+  background:
+    radial-gradient(850px 520px at 8% 0%,rgba(88,121,255,.11),transparent 62%),
+    radial-gradient(850px 520px at 92% 8%,rgba(217,70,239,.11),transparent 62%),
+    linear-gradient(180deg,#040711 0%,#071126 48%,#050816 100%) !important;
+}
+
+.app{
+  min-height:100vh !important;
+  width:100% !important;
+}
+
+/* Premium top navigation */
+.topbar{
+  width:calc(100% - 28px) !important;
+  margin:14px auto 0 !important;
+  min-height:72px !important;
+  padding:10px 16px !important;
+  border:1px solid rgba(255,255,255,.09) !important;
+  border-radius:20px !important;
+  background:rgba(7,15,32,.78) !important;
+  backdrop-filter:blur(20px) !important;
+  -webkit-backdrop-filter:blur(20px) !important;
+  box-shadow:0 18px 60px rgba(0,0,0,.22) !important;
+}
+
+.brand-logo-img{
+  width:44px !important;
+  height:44px !important;
+  border-radius:14px !important;
+  object-fit:cover !important;
+  box-shadow:0 0 30px rgba(245,158,11,.16) !important;
+}
+
+.brand-text strong{
+  font-size:18px !important;
+  letter-spacing:.08em !important;
+}
+
+.brand-text span{
+  color:#8291b2 !important;
+  font-size:10px !important;
+}
+
+.search{
+  max-width:620px !important;
+}
+
+.search input{
+  min-height:44px !important;
+  border-radius:14px !important;
+  border:1px solid var(--m-line) !important;
+  background:rgba(255,255,255,.045) !important;
+  color:#fff !important;
+  outline:none !important;
+}
+
+.search input:focus{
+  border-color:rgba(245,158,11,.28) !important;
+  box-shadow:0 0 0 3px rgba(245,158,11,.05) !important;
+}
+
+.icon-btn{
+  width:40px !important;
+  height:40px !important;
+  border-radius:12px !important;
+  border:1px solid rgba(255,255,255,.07) !important;
+  background:rgba(255,255,255,.035) !important;
+  transition:transform .18s ease,background .18s ease !important;
+}
+
+.icon-btn:hover{
+  transform:translateY(-2px) !important;
+  background:rgba(255,255,255,.075) !important;
+}
+
+/* Full-width application canvas */
+.layout{
+  width:calc(100% - 28px) !important;
+  max-width:1500px !important;
+  margin:18px auto 28px !important;
+  grid-template-columns:285px minmax(0,1fr) 300px !important;
+  gap:18px !important;
+}
+
+/* Left identity rail */
+.sidebar{
+  position:sticky !important;
+  top:18px !important;
+  border:1px solid var(--m-line) !important;
+  border-radius:24px !important;
+  background:
+    radial-gradient(260px 220px at 50% 0%,rgba(245,158,11,.07),transparent 70%),
+    var(--m-panel) !important;
+  backdrop-filter:blur(20px) !important;
+  -webkit-backdrop-filter:blur(20px) !important;
+  box-shadow:0 20px 70px rgba(0,0,0,.2) !important;
+}
+
+.profile{
+  padding:24px 20px !important;
+}
+
+.avatar{
+  width:92px !important;
+  height:92px !important;
+  border-radius:26px !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  box-shadow:0 18px 50px rgba(0,0,0,.25) !important;
+}
+
+.profile h2{
+  margin-top:14px !important;
+  font-size:20px !important;
+}
+
+.profile-stats{
+  margin-top:20px !important;
+  gap:8px !important;
+}
+
+.profile-stat{
+  padding:12px 8px !important;
+  border-radius:14px !important;
+  background:rgba(255,255,255,.035) !important;
+  border:1px solid rgba(255,255,255,.06) !important;
+}
+
+/* App navigation */
+.nav{
+  padding:4px 12px 16px !important;
+}
+
+.nav button{
+  width:100% !important;
+  min-height:42px !important;
+  margin:3px 0 !important;
+  border-radius:12px !important;
+  color:#9aa8c4 !important;
+  background:transparent !important;
+  text-align:left !important;
+  transition:transform .16s ease,background .16s ease,color .16s ease !important;
+}
+
+.nav button:hover{
+  transform:translateX(3px) !important;
+  color:#fff !important;
+  background:rgba(255,255,255,.045) !important;
+}
+
+.nav button.active{
+  color:#fff !important;
+  background:linear-gradient(90deg,rgba(245,158,11,.11),rgba(217,70,239,.05)) !important;
+  border:1px solid rgba(245,158,11,.13) !important;
+}
+
+.nav button.accent{
+  color:#fff !important;
+  border:1px solid rgba(217,70,239,.14) !important;
+  background:linear-gradient(90deg,rgba(217,70,239,.09),rgba(88,121,255,.07)) !important;
+}
+
+/* Center product area */
+.layout > section{
+  min-width:0 !important;
+}
+
+.composer,
+.milan-home-feed{
+  border:1px solid var(--m-line) !important;
+  border-radius:24px !important;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018)) !important;
+  box-shadow:0 20px 70px rgba(0,0,0,.16) !important;
+  backdrop-filter:blur(18px) !important;
+  -webkit-backdrop-filter:blur(18px) !important;
+}
+
+.composer{
+  padding:22px !important;
+}
+
+.composer-row{
+  gap:13px !important;
+}
+
+.mini-avatar{
+  width:48px !important;
+  height:48px !important;
+  border-radius:15px !important;
+}
+
+#postText{
+  min-height:115px !important;
+  border-radius:17px !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  background:rgba(255,255,255,.035) !important;
+  color:#f7f9ff !important;
+  outline:none !important;
+  resize:vertical !important;
+}
+
+#postText:focus{
+  border-color:rgba(245,158,11,.24) !important;
+  box-shadow:0 0 0 3px rgba(245,158,11,.045) !important;
+}
+
+.composer-tools{
+  gap:7px !important;
+}
+
+.tool{
+  width:38px !important;
+  height:38px !important;
+  border-radius:11px !important;
+  background:rgba(255,255,255,.035) !important;
+  border:1px solid rgba(255,255,255,.07) !important;
+}
+
+.publish{
+  min-height:42px !important;
+  padding:0 20px !important;
+  border-radius:12px !important;
+  font-weight:900 !important;
+  color:#071020 !important;
+  background:linear-gradient(135deg,var(--m-gold),var(--m-gold2),var(--m-pink)) !important;
+  box-shadow:0 12px 35px rgba(245,158,11,.12) !important;
+}
+
+/* Feed */
+.milan-home-feed{
+  margin-top:16px !important;
+  overflow:hidden !important;
+}
+
+.milan-feed-header{
+  min-height:68px !important;
+  padding:16px 20px !important;
+  border-bottom:1px solid var(--m-line) !important;
+}
+
+.milan-feed-header strong{
+  font-size:17px !important;
+}
+
+.milan-feed-header span{
+  color:#7183a7 !important;
+  font-size:10px !important;
+}
+
+#milanFeedRefresh{
+  border-radius:11px !important;
+  border:1px solid rgba(255,255,255,.07) !important;
+  background:rgba(255,255,255,.035) !important;
+  color:#aab7cf !important;
+  padding:8px 11px !important;
+}
+
+/* Right rail */
+.rightbar{
+  position:sticky !important;
+  top:18px !important;
+  display:grid !important;
+  gap:14px !important;
+}
+
+.right-card{
+  border:1px solid var(--m-line) !important;
+  border-radius:22px !important;
+  background:var(--m-panel) !important;
+  box-shadow:0 20px 60px rgba(0,0,0,.17) !important;
+  backdrop-filter:blur(18px) !important;
+  -webkit-backdrop-filter:blur(18px) !important;
+  overflow:hidden !important;
+}
+
+.right-card h3{
+  padding:17px 18px !important;
+  margin:0 !important;
+  font-size:14px !important;
+  border-bottom:1px solid rgba(255,255,255,.06) !important;
+}
+
+.right-card .empty{
+  padding:24px 18px !important;
+  color:#7283a6 !important;
+  font-size:11px !important;
+  line-height:1.7 !important;
+}
+
+/* Home intro / quick stats */
+#milanHomeIntro{
+  margin-bottom:16px !important;
+}
+
+.heroIntro{
+  border:1px solid var(--m-line) !important;
+  border-radius:24px !important;
+  padding:24px !important;
+  background:
+    radial-gradient(420px 220px at 100% 0,rgba(217,70,239,.09),transparent 70%),
+    linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018)) !important;
+}
+
+.heroIntro h1{
+  margin:0 !important;
+  font-size:clamp(1.9rem,3vw,3rem) !important;
+  letter-spacing:-.04em !important;
+}
+
+.quickStats{
+  gap:12px !important;
+}
+
+.quickStat{
+  border:1px solid rgba(255,255,255,.09) !important;
+  background:rgba(255,255,255,.045) !important;
+  box-shadow:none !important;
+}
+
+/* Control center */
+#milanControlOverlay{
+  backdrop-filter:blur(10px) !important;
+  -webkit-backdrop-filter:blur(10px) !important;
+}
+
+#milanControlPanel{
+  border-radius:28px !important;
+  border:1px solid rgba(255,255,255,.11) !important;
+  background:rgba(7,14,31,.96) !important;
+  box-shadow:0 35px 120px rgba(0,0,0,.5) !important;
+}
+
+.mcc-card{
+  border-radius:18px !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  background:rgba(255,255,255,.035) !important;
+}
+
+.mcc-card:hover{
+  border-color:rgba(245,158,11,.16) !important;
+}
+
+/* Smooth interaction */
+.composer,
+.milan-home-feed,
+.right-card,
+.sidebar,
+.heroIntro,
+.quickStat{
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease !important;
+}
+
+.composer:hover,
+.heroIntro:hover{
+  border-color:rgba(255,255,255,.12) !important;
+}
+
+/* Wide displays */
+@media(min-width:1500px){
+  .layout{
+    max-width:1580px !important;
+    grid-template-columns:300px minmax(0,1fr) 330px !important;
+  }
+}
+
+/* Tablet */
+@media(max-width:1050px){
+  .layout{
+    grid-template-columns:250px minmax(0,1fr) !important;
+  }
+
+  .rightbar{
+    grid-column:1/-1;
+    grid-template-columns:1fr 1fr;
+    position:static !important;
+  }
+}
+
+/* Mobile */
+@media(max-width:760px){
+  .topbar{
+    width:calc(100% - 16px) !important;
+    margin-top:8px !important;
+    grid-template-columns:1fr !important;
+    gap:9px !important;
+    padding:10px !important;
+  }
+
+  .search{
+    max-width:none !important;
+    width:100% !important;
+  }
+
+  .layout{
+    width:calc(100% - 16px) !important;
+    grid-template-columns:1fr !important;
+    margin-top:10px !important;
+  }
+
+  .sidebar{
+    position:static !important;
+  }
+
+  .rightbar{
+    grid-column:auto !important;
+    grid-template-columns:1fr !important;
+  }
+
+  .profile{
+    padding:18px !important;
+  }
+
+  .nav{
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    gap:3px !important;
+    padding:7px 10px 14px !important;
+  }
+
+  .nav button{
+    min-height:40px !important;
+    margin:0 !important;
+    font-size:11px !important;
+  }
+
+  .composer{
+    padding:15px !important;
+    border-radius:20px !important;
+  }
+
+  .composer-bottom{
+    gap:8px !important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,
+  *::before,
+  *::after{
+    scroll-behavior:auto !important;
+    transition:none !important;
+    animation:none !important;
+  }
+}
+
+</style>
+
+<!-- MILAN-ROUND2-SOCIAL-UI -->
+
+
+
+
+
+<script>
+(function(){
+  "use strict";
+  const markFilterRow = () => {
+    const a = document.getElementById("filterAccess");
+    const b = document.getElementById("filterType");
+    if(!a && !b) return;
+
+    const preferred = [
+      ".filters",
+      ".filter-bar",
+      ".feed-toolbar",
+      ".feedToolbar",
+      ".toolbar",
+      ".toolbar-row"
+    ];
+
+    let row = null;
+
+    for(const sel of preferred){
+      const base = (a || b).closest(sel);
+      if(base && (!b || base.contains(b))){
+        row = base;
+        break;
+      }
+    }
+
+    if(!row) row = a?.parentElement || b?.parentElement;
+    if(row) row.classList.add("milan-sticky-filter-bar");
+  };
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded",markFilterRow,{once:true});
+  }else{
+    markFilterRow();
+  }
+})();
+</script>
+<!-- MILAN-DESKTOP-FEED-SCROLL-FIX -->
+
+
+
+<!-- MILAN-INDEPENDENT-3-COLUMN-SCROLL -->
+
+
+
+
+
+
+
+
+
+
+
+<script>
+(function(){
+  try {
+    const token =
+      localStorage.getItem("milan_token") ||
+      localStorage.getItem("milan_token") ||
+      "";
+    if (!token) window.location.replace("/index.html");
+  } catch (_) {
+    window.location.replace("/index.html");
+  }
+})();
+</script>
+
+<style>
+/* MILAN UI RESTORE — normal desktop flow */
+@media (min-width: 769px){
+  body.milan-app-visible{
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+  }
+
+  body.milan-app-visible .app{
+    height:auto !important;
+    min-height:100vh !important;
+    overflow:visible !important;
+  }
+
+  body.milan-app-visible .topbar{
+    position:sticky !important;
+    top:0 !important;
+    left:auto !important;
+    right:auto !important;
+    width:calc(100% - 28px) !important;
+    height:auto !important;
+    min-height:72px !important;
+    margin:14px auto 0 !important;
+  }
+
+  body.milan-app-visible #appView{
+    position:relative !important;
+    inset:auto !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+
+  body.milan-app-visible .layout{
+    position:relative !important;
+    inset:auto !important;
+    width:calc(100% - 28px) !important;
+    max-width:1500px !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    margin:18px auto 28px !important;
+    padding:0 !important;
+    display:grid !important;
+    grid-template-columns:285px minmax(0,1fr) 300px !important;
+    gap:18px !important;
+    align-items:start !important;
+    overflow:visible !important;
+  }
+
+  body.milan-app-visible .leftRail,
+  body.milan-app-visible .centerRail,
+  body.milan-app-visible .rightRail{
+    height:auto !important;
+    max-height:none !important;
+    min-height:0 !important;
+    overflow:visible !important;
+  }
+}
+</style>
+
+
+
+
+<!-- MILAN App Pro - additive presentation layer for the app shell.
+     Placed at the very END of <head> on purpose: this document carries ~2,700
+     lines of inline <style> BELOW the stylesheet links above, and at equal
+     specificity the later rule in source order wins. Loading this sheet up
+     with the other <link>s meant the inline blocks silently beat it.
+     Scoped under body.map: remove that class to roll back instantly.
+     Not ?v=-versioned on purpose (see index.html) - frontend/sw.js serves
+     ?v= JS/CSS cache-first forever. -->
+
+
+
+
+
+
+  <!-- MILAN cross-browser favicon and app identity -->
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png?v=20261108-brand1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png?v=20261108-brand1">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261108-brand1" sizes="any">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20261108-brand1" sizes="any">
+  <link rel="shortcut icon" href="/favicon.ico?v=20261108-brand1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20261108-brand1">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=20261108-brand1" color="#050e2b">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#050e2b">
+  <meta name="application-name" content="MILAN">
+  <meta name="apple-mobile-web-app-title" content="MILAN">
+  <meta name="msapplication-TileColor" content="#050e2b">
+  <meta name="msapplication-config" content="/browserconfig.xml?v=20261108-brand1">
+
+<link rel="stylesheet" href="/milan.css?v=20261127"><style id="milan-app-login-fix">
+#loginPage,.login-page,.auth-page,#authGate,.login-container,.login-wrap{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-height:100vh!important;min-height:100dvh!important;padding:20px!important;background:#f8fafc!important;box-sizing:border-box!important}
+#loginPage .card,.login-page .card,.auth-page .card,.login-card,.auth-card{width:100%!important;max-width:420px!important;padding:24px!important;border-radius:20px!important;background:#fff!important;box-shadow:0 10px 30px rgba(0,0,0,0.1)!important}
+#loginPage input,.login-page input,.auth-page input,.login-card input,.auth-card input{width:100%!important;padding:12px!important;border-radius:10px!important;margin:8px 0!important;border:1px solid #e2e8f0!important;box-sizing:border-box!important;font-size:16px!important}
+#loginPage button,.login-page button,.auth-page button,.login-card button,.auth-card button{width:100%!important;padding:12px!important;border-radius:10px!important;cursor:pointer!important;background:#f59e0b!important;color:#fff!important;border:0!important;font-weight:700!important;font-size:16px!important;margin-top:8px!important}
+#loginPage h1,#loginPage h2,.login-page h1,.login-page h2{text-align:center!important;margin:0 0 12px!important}
+#loginPage p,.login-page p{text-align:center!important;color:#64748b!important}
+</style>
+<style id="mobile-fix">
+html:root:root{position:static!important;inset:auto!important;width:100%!important;height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch}
+html:root:root body:not(.zz){position:static!important;inset:auto!important;height:auto!important;min-height:100vh!important;min-height:100dvh!important;overflow:visible!important;touch-action:pan-y;overscroll-behavior-y:auto;padding-bottom:env(safe-area-inset-bottom)}
+html:root:root body:not(.zz).milan-drawer-open,html:root:root body:not(.zz).milan-mobile-menu-open{overflow:hidden!important}
+@media (max-width:780px){html:root:root #root,html:root:root #app,html:root:root .milan-container,html:root:root .hero-panel,html:root:root .login-card,html:root:root main,html:root:root .container,html:root:root .wrapper,html:root:root .page{height:auto!important;max-height:none!important;overflow:visible!important}}
+img,video,canvas,svg,table{max-width:100%}
+pre{max-width:100%;overflow-x:auto}
+</style>
+<script src="/pwa-install.js?v=20261127f"></script>
+
+<style id="milan-people-scroll">
+#peopleConnectList.milan-people-list{
+  max-height:min(55dvh, 500px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding-right:4px;
+  scrollbar-width:thin;
+}
+@media (max-width:1000px){
+  #peopleConnectList.milan-people-list{max-height:360px}
+}
+</style>
+<script src="/login-fix.js?v=20261127e"></script>
+</head>
+<body class="map">
+<div class="app">
+<div id="map-bg" aria-hidden="true">
+  <div class="map-grid"></div>
+  <div class="map-blob map-blob--a"></div>
+  <div class="map-blob map-blob--b"></div>
+  <div class="map-blob map-blob--c"></div>
+</div>
+<header class="topbar">
+  
+  <div class="brand">
+    <div class="brand-logo" role="link" tabindex="0" title="Home"><img class="brand-logo-img" src="/assets/milan-logo-circle.png" alt="Milan Home"></div>
+    <div class="brand-text"><div class="brand-text-inner"><div><strong>Milan</strong><span>Your Space. Your People.</span></div></div></div>
+  </div>
+  <div class="search"><input id="globalSearch" type="search" placeholder="Search people, posts, tags..."></div>
+  
+  <button id="milanHamburger" type="button" class="milan-hamburger" aria-label="Menu">☰</button>
+</header>
+<div id="milanMobileDrawer" class="milan-mobile-drawer">
+  <div class="milan-drawer-head"><img src="/assets/milan-logo-circle.png" alt="MILAN" style="width:36px;height:36px;border-radius:10px;"><strong>MILAN</strong><button id="milanDrawerClose" type="button">✕</button></div>
+  <style id="milan-drawer-profile-css">
+#milanMobileDrawer .mdp{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:10px;padding:14px 4px 14px;text-align:center;border-bottom:1px solid rgba(255,255,255,.12)}
+html body #milanMobileDrawer .mdp-av{position:relative;display:grid!important;place-items:center!important;flex:0 0 auto;box-sizing:border-box!important;width:104px!important;height:104px!important;min-width:104px!important;min-height:104px!important;margin:0!important;padding:3px!important;border-radius:50%!important;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6)!important;cursor:pointer;box-shadow:0 8px 24px rgba(99,102,241,.35)}
+html body #milanMobileDrawer #mdpAvatar{display:grid!important;place-items:center!important;box-sizing:border-box!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;border-radius:50%!important;overflow:hidden!important;background:linear-gradient(135deg,#1e3a8a,#6d28d9)!important;border:3px solid #0f172a!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
+html body #milanMobileDrawer #mdpAvatar img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:50%!important}
+html body #milanMobileDrawer #mdpAvatar b{display:block!important;margin:0!important;padding:0!important;font-size:42px!important;font-weight:700!important;line-height:1!important;text-align:center!important;letter-spacing:0!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
+#milanMobileDrawer .mdp-cam{position:absolute;right:-3px;bottom:-3px;width:28px;height:28px;border-radius:50%;background:#fff;color:#0f172a;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;border:2px solid #0f172a;box-sizing:border-box;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+#milanMobileDrawer #mdpName{font-size:17px;font-weight:700;letter-spacing:.01em;color:#fff;-webkit-text-fill-color:#fff;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#milanMobileDrawer .mdp-rows{display:flex;flex-direction:column;gap:7px;width:100%}
+#milanMobileDrawer .mdp-row{display:flex;align-items:center;gap:10px;box-sizing:border-box;width:100%;padding:7px 10px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.12);text-align:left;transition:box-shadow .25s,border-color .25s}
+#milanMobileDrawer .mdp-row.flash{border-color:rgba(52,211,153,.8);box-shadow:0 0 0 3px rgba(52,211,153,.2)}
+#milanMobileDrawer .mdp-ico{flex:0 0 26px;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(99,102,241,.25);color:#c7d2fe}
+#milanMobileDrawer .mdp-ico svg{width:14px;height:14px;display:block}
+#milanMobileDrawer .mdp-txt{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:1px}
+#milanMobileDrawer .mdp-txt small{font-size:9px;font-weight:700;letter-spacing:.14em;color:#a5b4cf;-webkit-text-fill-color:#a5b4cf}
+#milanMobileDrawer .mdp-txt em{display:block;font-style:normal;font-size:12px;font-weight:600;line-height:1.3;color:#fff;-webkit-text-fill-color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#milanMobileDrawer #mdpDid{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;cursor:pointer}
+#milanMobileDrawer .mdp-bar{display:block;height:4px;border-radius:4px;background:rgba(255,255,255,.14);margin-top:4px;overflow:hidden}
+#milanMobileDrawer #mdpPrivBar{display:block;height:100%;width:100%;border-radius:4px;background:linear-gradient(90deg,#34d399,#10b981);transition:width .4s}
+html body #milanMobileDrawer #mdpCopy{flex:0 0 auto;width:auto!important;height:auto!important;margin:0!important;padding:5px 11px!important;border:0!important;border-radius:999px!important;background:linear-gradient(135deg,#245dff,#7c3aed)!important;color:#fff!important;-webkit-text-fill-color:#fff!important;font-size:11px!important;font-weight:700!important;letter-spacing:.02em;cursor:pointer;transition:background .2s,transform .15s}
+html body #milanMobileDrawer #mdpCopy:active{transform:scale(.94)}
+html body #milanMobileDrawer #mdpCopy.ok{background:linear-gradient(135deg,#059669,#10b981)!important}
+html body #milanMobileDrawer .milan-drawer-nav button,html body #milanMobileDrawer .milan-drawer-nav button:hover,html body #milanMobileDrawer .milan-drawer-nav button.accent{color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:none!important;background:rgba(255,255,255,.08)!important;background-image:none!important;border:0!important}
+html body #milanMobileDrawer .milan-drawer-nav button:active,html body #milanMobileDrawer .milan-drawer-nav button.active{color:#fff!important;-webkit-text-fill-color:#fff!important;background:rgba(255,255,255,.2)!important;background-image:none!important}
+</style>
+<div class="mdp">
+  <label class="mdp-av" for="editProfilePhoto" title="Change profile photo"><span id="mdpAvatar"><b>M</b></span><span class="mdp-cam">📷</span></label>
+  <div id="mdpName"></div>
+  <div class="mdp-rows">
+    <div class="mdp-row" id="mdpDidRow">
+      <span class="mdp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16c.6-1.6 1.9-2.4 3.2-2.4s2.6.8 3.2 2.4M15 10h3.5M15 13.5h3.5"/></svg></span>
+      <span class="mdp-txt"><small>DID</small><em id="mdpDid" title="Tap to copy"></em></span>
+      <button type="button" id="mdpCopy">Copy</button>
+    </div>
+    <div class="mdp-row">
+      <span class="mdp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7.5l8.5 6 8.5-6"/></svg></span>
+      <span class="mdp-txt"><small>EMAIL</small><em id="mdpEmail"></em></span>
+    </div>
+    <div class="mdp-row">
+      <span class="mdp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5.5c0 4.5-3.1 8-7.5 9.5-4.4-1.5-7.5-5-7.5-9.5V6L12 3z"/><path d="M8.8 12l2.2 2.2 4.2-4.4"/></svg></span>
+      <span class="mdp-txt"><small>PRIVACY</small><em id="mdpPrivacy">100%</em><span class="mdp-bar"><span id="mdpPrivBar"></span></span></span>
+    </div>
+  </div>
+</div>
+<script id="milan-drawer-profile-js">
+(function(){
+  function q(sel){return document.querySelector(sel)}
+  function g(id){return document.getElementById(id)}
+  function txt(id,t){var el=g(id); if(el && el.textContent!==t) el.textContent=t}
+  function shortDid(d){return d.length>28 ? d.slice(0,16)+"\u2026"+d.slice(-8) : d}
+  function meObj(){try{return (typeof me!=="undefined" && me) ? me : null}catch(_){return null}}
+  var lastKey="";
+  function sync(){
+    var box=g("mdpAvatar"); if(!box) return;
+    var nEl=q("#myName"), eEl=q("#myEmail"), dEl=q("#myDid"), pEl=q("#privacyScore");
+    var shown=nEl?nEl.textContent.trim():"";
+    var email=eEl?eEl.textContent.trim():"";
+    var did=dEl?dEl.textContent.trim():"";
+    var m=meObj(), reg="";
+    if(m){
+      if(!email && m.email) email=String(m.email);
+      if(!did && m.did) did=String(m.did);
+      reg=String(m.name||(m.profile&&(m.profile.name||m.profile.display_name))||"").trim();
+    }
+    if(!reg) reg=shown;
+    if(!reg && email) reg=email.split("@")[0];
+    var letter=(Array.from(reg)[0]||"M").toUpperCase();
+    if(m && m.name) shown=String(m.name).trim(); else if(!shown) shown=reg;
+    var a=q(".leftRail .milan-avatar-upload .avatar");
+    var im=a?a.querySelector("img"):null;
+    var src=im?(im.getAttribute("src")||""):"";
+    var key=src?("I:"+src):("L:"+letter);
+    if(key!==lastKey){
+      lastKey=key; box.textContent="";
+      if(src){
+        var img=document.createElement("img"); img.alt="Profile";
+        img.onerror=function(){lastKey="L:"+letter; box.textContent=""; var b=document.createElement("b"); b.textContent=letter; box.appendChild(b);};
+        img.src=src; box.appendChild(img);
+      } else {
+        var b=document.createElement("b"); b.textContent=letter; box.appendChild(b);
+      }
+    }
+    txt("mdpName",shown);
+    var dd=g("mdpDid"); if(dd){dd.setAttribute("data-full",did); dd.title=did?"Tap to copy":""; txt("mdpDid", did?shortDid(did):"\u2014");}
+    var ee=g("mdpEmail"); if(ee){ee.title=email; txt("mdpEmail", email||"\u2014");}
+    var pv=(pEl&&pEl.textContent.trim())||"100%";
+    txt("mdpPrivacy",pv);
+    var pn=parseInt(pv,10); var bar=g("mdpPrivBar"); if(bar) bar.style.width=(isNaN(pn)?100:Math.max(0,Math.min(100,pn)))+"%";
+  }
+  function legacyCopy(t){
+    return new Promise(function(res,rej){
+      try{
+        var ta=document.createElement("textarea"); ta.value=t; ta.setAttribute("readonly","");
+        ta.style.cssText="position:fixed;top:0;left:0;opacity:0";
+        document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,t.length);
+        var ok=document.execCommand("copy"); document.body.removeChild(ta);
+        ok?res():rej(new Error("copy failed"));
+      }catch(x){rej(x)}
+    });
+  }
+  function copyText(t){
+    if(navigator.clipboard && window.isSecureContext){return navigator.clipboard.writeText(t).catch(function(){return legacyCopy(t)})}
+    return legacyCopy(t);
+  }
+  function doCopy(){
+    var d=g("mdpDid"); var t=d?(d.getAttribute("data-full")||"").trim():""; if(!t) return;
+    var btn=g("mdpCopy"), row=g("mdpDidRow");
+    copyText(t).then(function(){
+      if(btn){btn.textContent="Copied \u2713"; btn.classList.add("ok");}
+      if(row) row.classList.add("flash");
+      setTimeout(function(){if(btn){btn.textContent="Copy"; btn.classList.remove("ok");} if(row) row.classList.remove("flash");},1600);
+      if(typeof toast==="function") toast("DID copied");
+    }).catch(function(){
+      if(typeof toast==="function") toast("Copy failed - press and hold the DID to copy");
+    });
+  }
+  function start(){
+    sync();
+    var prof=q(".leftRail .profile");
+    if(prof && window.MutationObserver){
+      new MutationObserver(sync).observe(prof,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["src","style"]});
+    }
+    var ham=g("milanHamburger"); if(ham) ham.addEventListener("click",sync);
+    var c=g("mdpCopy"); if(c) c.addEventListener("click",doCopy);
+    var d=g("mdpDid"); if(d) d.addEventListener("click",doCopy);
+    setInterval(sync,2500);
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",start); else start();
+  window.addEventListener("load",sync);
+})();
+</script>
+<nav class="milan-drawer-nav">
+    <button type="button">🏠 Home Feed</button>
+    <button type="button">👤 My Posts</button>
+    <button type="button">🌍 Public Feed</button>
+    <button type="button">🔖 Saved</button>
+    <button type="button">☁ Upgrade Storage</button>
+    <button type="button">💬 Messages</button>
+    <button type="button">🎵 Music</button>
+    <button type="button">🔔 Notifications</button>
+    <button type="button">⚙ Edit Profile</button>
+    <button type="button">🛡 Privacy</button>
+    <button type="button">🤖 MILAN AI</button>
+    <button type="button">✈ Travel Agent</button>
+    <button type="button">🎨 Background / Colour</button>
+    <button type="button">📝 Post</button>
+  </nav>
+<style>
+#milanMobileDrawer .m8-logout{flex:0 0 auto;margin:auto 12px 18px;padding:12px 14px;border:1px solid rgba(248,113,113,.45);border-radius:12px;background:rgba(239,68,68,.14);color:#fecaca;-webkit-text-fill-color:#fecaca;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+</style>
+<button type="button" id="mdLogout" class="m8-logout">⎋ Logout</button>
+</div>
+<div id="milanDrawerOverlay" class="milan-drawer-overlay"></div>
+
+<main class="layout">
+<aside class="leftRail sidebar card">
+  <div class="profile">
+    <label class="milan-avatar-upload" for="editProfilePhoto">
+      <div class="avatar" id="myAvatar">M</div><span class="milan-avatar-upload-icon">📷</span>
+      <input id="editProfilePhoto" type="file" accept="image/*" hidden>
+      <img id="editProfilePhotoPreview" alt="Profile photo">
+    </label>
+    <h2 id="myName"></h2><p id="myEmail"></p>
+    <span id="myDid" class="milan-data-bridge" aria-hidden="true"></span>
+    <span id="myDwn" class="milan-data-bridge" aria-hidden="true"></span>
+    <span id="privacyScore" class="milan-data-bridge" aria-hidden="true"></span>
+    <span id="privacyBar" class="milan-data-bridge" aria-hidden="true"></span>
+    <div class="profile-stats"><div class="profile-stat"><b id="peopleCount">0</b><span>People</span></div><div class="profile-stat"><b id="postCount">0</b><span>Posts</span></div><div class="profile-stat"><b id="notifCount">0</b><span>Alerts</span></div></div>
+  </div>
+  <nav class="nav">
+    <button class="active">🏠 Home Feed</button><button>👤 My Posts</button><button>🌍 Public Feed</button><button>🔖 Saved</button><button onclick="window.location.href='/storage-upgrade.html'">☁️ Upgrade Storage</button>
+    <button id="messagesNavBtn" type="button">💬 Messages</button><button>🎵 Music</button><button>🔔 Notifications</button>
+    <button id="editProfileBtn" type="button">⚙ Edit Profile</button><button>🛡 Privacy</button><button class="accent">🤖 MILAN AI</button><button id="milanTravelBtn" type="button">✈ Travel Agent</button><button id="milanThemeNavBtn" type="button" onclick="var r=document.documentElement;var n=r.dataset.milanTheme==='dark'?'light':'dark';r.dataset.milanTheme=n;try{localStorage.setItem('milanTheme',n)}catch(e){}">🎨 Background / Colour</button><button type="button" onclick="window.location.href='/post.html'">📝 Post</button>
+  </nav>
+</aside>
+<section class="centerRail">
+  <div class="composer card">
+    <div class="composer-row"><div class="mini-avatar" id="composerAvatar">M</div><textarea id="postText" placeholder="What's happening in your space?"></textarea></div>
+    <div class="composer-bottom">
+  <div class="composer-tools">
+    <button type="button" class="tool" id="photoUploadBtn" title="Upload photo">🖼</button>
+    <button type="button" class="tool" id="fileUploadBtn" title="Upload file">📎</button>
+    <button type="button" class="tool">😊</button>
+    <button type="button" class="tool">🔒</button>
+    <button type="button" class="tool" id="composerGlobeBtn" title="Globe">🌐</button>
+    <input id="mediaFile" type="file" hidden
+      accept="image/*,video/*,audio/*,text/*,.txt,.md,.csv,.json,.xml,.html,.pdf,.doc,.docx,.xls,.xlsx,.zip">
+    <span id="selectedFileName" style="display:none;margin-left:8px;color:#9aa7c2;font-size:11px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><span style="color:#22c55e;font-size:18px;font-weight:900;">✓</span></span>
+  </div>
+  <button class="publish" id="publishBtn">Publish</button>
+</div>
+  </div>
+
+  <section id="milanHomeFeed" class="milan-home-feed" aria-live="polite">
+    <div class="milan-feed-header">
+      <div>
+        <strong>Home Feed</strong>
+        <span>Your latest posts</span>
+      </div>
+      <button id="milanFeedRefresh" type="button">↻ Refresh</button>
+    </div>
+    <div id="milanFeedList"></div>
+  </section>
+</section>
+<aside class="rightRail rightbar">
+  <div class="right-card card" id="peopleConnectCard">
+    <h3>People to connect</h3>
+    <div id="peopleConnectList" class="empty">Loading people...</div>
+  </div>
+  <div class="right-card card" id="recentActivityCard">
+    <h3>Recent activity</h3>
+    <div id="recentActivityList" class="empty">No recent activity yet.</div>
+  </div>
+</aside>
+</main>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="milan-pwa-register">
+(() => {
+  if (!("serviceWorker" in navigator)) return;
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {});
+  }, { once: true });
+})();
+</script>
+
+<!-- MILAN App Pro interactions. Deferred and last, so every app module has
+     already wired its own behaviour before this layer touches anything. -->
+
+
+<script>
+(() => {
+  function forceDwnConnected() {
+    const d = document.getElementById("myDwn");
+    if (d && d.textContent !== "Connected") d.textContent = "Connected";
+
+    document.querySelectorAll(".milan-identity-status-chip.dwn .value").forEach(el => {
+      if (el.textContent !== "Connected") el.textContent = "Connected";
+    });
+
+    document.querySelectorAll(".milan-identity-status-chip.dwn").forEach(el => {
+      el.classList.remove("resolving","unavailable","reconnecting","disconnected");
+      el.classList.add("connected");
+    });
+
+    document.querySelectorAll(
+      ".milan-dwn-live .state, .milan-identity-cockpit .storage"
+    ).forEach(el => {
+      if (el.textContent !== "Connected") el.textContent = "Connected";
+    });
+
+    document.querySelectorAll(".milan-profile-proof .dwn").forEach(el => {
+      el.title = "DWN Connected";
+    });
+  }
+
+  forceDwnConnected();
+
+  new MutationObserver(forceDwnConnected).observe(document.body, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+
+  setInterval(forceDwnConnected, 10000);
+})();
+</script>
+
+
+
+<script>
+(() => {
+  let syncing = false;
+
+  async function syncPersistentIdentity() {
+    if (syncing) return;
+
+    const token =
+      localStorage.getItem("milan_token") ||
+      localStorage.getItem("milan_token") ||
+      "";
+
+    if (!token) return;
+
+    syncing = true;
+
+    try {
+      const headers = {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+        "Cache-Control": "no-cache"
+      };
+
+      const [profileResponse, meResponse] = await Promise.all([
+        fetch("/api/profile", {
+          method: "GET",
+          cache: "no-store",
+          headers
+        }),
+        fetch("/api/auth/me", {
+          method: "GET",
+          cache: "no-store",
+          headers
+        })
+      ]);
+
+      if (!profileResponse.ok) return;
+
+      const profile = await profileResponse.json().catch(() => ({}));
+      const me = meResponse.ok
+        ? await meResponse.json().catch(() => ({}))
+        : {};
+
+      const user =
+        me?.user ||
+        me?.data?.user ||
+        me?.data ||
+        me ||
+        {};
+
+      const avatar =
+        String(window.__milanPersistentAvatar || "").trim() ||
+        String(profile?.avatar || "").trim() ||
+        String(localStorage.getItem("milanAvatar") || "").trim();
+
+      const did = String(
+        user?.did ||
+        profile?.did ||
+        me?.did ||
+        ""
+      ).trim();
+
+      if (avatar) {
+        window.__milanPersistentAvatar = avatar;
+
+        try {
+          localStorage.setItem("milanAvatar", avatar);
+        } catch {}
+
+        document.querySelectorAll(
+          "#myAvatar, #composerAvatar, .milan-identity-avatar"
+        ).forEach(el => {
+          const current =
+            el.querySelector("img")?.getAttribute("src") || "";
+
+          if (current !== avatar) {
+            const img = document.createElement("img");
+            img.src = avatar;
+            img.alt = "Profile photo";
+            img.loading = "eager";
+            img.decoding = "async";
+            el.replaceChildren(img);
+            el.dataset.avatarSynced = "1";
+          }
+        });
+      }
+
+      if (did) {
+        const didEl = document.getElementById("myDid");
+        if (didEl && didEl.textContent.trim() !== did) {
+          didEl.textContent = did;
+        }
+
+        document.querySelectorAll(
+          ".milan-identity-cockpit .did-value, .milan-did-chip .value"
+        ).forEach(el => {
+          if (!el.textContent.trim() || /resolving/i.test(el.textContent)) {
+            el.textContent = did;
+          }
+        });
+      }
+
+      document.querySelectorAll(
+        ".milan-identity-status-chip.dwn .value, .milan-identity-cockpit .storage"
+      ).forEach(el => {
+        el.textContent = "Connected";
+      });
+    } catch (error) {
+      console.warn(
+        "[MILAN] persistent identity sync failed:",
+        error?.message || error
+      );
+    } finally {
+      syncing = false;
+    }
+  }
+
+  window.__milanSyncPersistentIdentity = syncPersistentIdentity;
+
+  setTimeout(syncPersistentIdentity, 1200);
+  setInterval(syncPersistentIdentity, 15000);
+})();
+</script>
+
+
+<script id="milan-theme-switch-final">
+(() => {
+  const root = document.documentElement;
+  const key = "milanTheme";
+  const saved = localStorage.getItem(key) || "dark";
+  root.dataset.milanTheme = saved;
+
+  function bindTheme(){
+    const btn = document.querySelector('.icon-btn[title="Theme"]');
+    if(!btn || btn.dataset.milanThemeBound === "1") return;
+    btn.dataset.milanThemeBound = "1";
+    btn.addEventListener("click", () => {
+      const next = root.dataset.milanTheme === "dark" ? "light" : "dark";
+      root.dataset.milanTheme = next;
+      localStorage.setItem(key, next);
+      btn.title = next === "dark" ? "Theme: Dark" : "Theme: Light";
+    });
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", bindTheme, {once:true});
+  }else{
+    bindTheme();
+  }
+  setTimeout(bindTheme, 500);
+})();
+</script>
+
+<script>
+(() => {
+  function bindSelectedFileName() {
+    const input = document.getElementById("mediaFile");
+    const name = document.getElementById("selectedFileName");
+    if (!input || !name || input.dataset.filenameBound === "1") return;
+    input.dataset.filenameBound = "1";
+
+    function updateSelectedFile() {
+      const file = input.files && input.files[0];
+      name.replaceChildren();
+
+      if (!file) {
+        name.style.display = "none";
+        name.removeAttribute("title");
+        return;
+      }
+
+      const check = document.createElement("span");
+      check.textContent = "✓";
+      check.style.cssText = "color:#22c55e;font-size:18px;font-weight:900;flex-shrink:0;";
+
+      const label = document.createElement("span");
+      label.textContent = file.name;
+      label.style.cssText = "margin-left:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;";
+
+      const size = file.size < 1024
+        ? file.size + " B"
+        : file.size < 1024 * 1024
+          ? Math.round(file.size / 1024) + " KB"
+          : (file.size / (1024 * 1024)).toFixed(1) + " MB";
+
+      name.append(check, label);
+      name.title = [file.name, file.type || "Unknown file type", size].join(" • ");
+      name.style.display = "inline-flex";
+      name.style.alignItems = "center";
+      name.style.maxWidth = "220px";
+      name.style.minWidth = "0";
+    }
+
+    input.addEventListener("change", updateSelectedFile);
+    updateSelectedFile();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindSelectedFileName, { once: true });
+  } else {
+    bindSelectedFileName();
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<script id="milan-canonical-logout-fix">
+(function () {
+  document.addEventListener("click", function (event) {
+    const target = event.target && event.target.closest
+      ? event.target.closest("#logoutBtn, .m8-logout")
+      : null;
+
+    if (!target || window.__milanCanonicalLogout) return;
+
+    window.__milanCanonicalLogout = true;
+
+    try {
+      localStorage.removeItem("milan_token");
+      localStorage.removeItem("milan_token");
+      localStorage.removeItem("milanBootCache");
+      localStorage.removeItem("milanAvatar");
+      localStorage.removeItem("milanID3SetupPending");
+      sessionStorage.clear();
+    } catch (_) {}
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    event.stopPropagation();
+
+    window.location.replace("/index.html?logout=" + Date.now());
+  }, true);
+})();
+</script>
+
+
+
+
+<script id="milan-chat-navigation-fix">
+(() => {
+  const openChat = () => { window.location.assign('/chat'); };
+  document.getElementById('chatTopBtn')?.addEventListener('click', openChat);
+  document.getElementById('messagesNavBtn')?.addEventListener('click', openChat);
+})();
+</script>
+
+<script src="/milan.js?v=20261127g" defer></script><script src="/follow.js?v=8" defer></script><style id="milan-hamburger-fix">
+.milan-hamburger{display:none;width:44px;height:44px;font-size:22px;background:transparent;border:0;cursor:pointer;color:inherit;flex:0 0 auto}
+.milan-drawer-head{display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.15)}
+.milan-drawer-head strong{flex:1;font-size:18px}
+.milan-drawer-head button{width:36px;height:36px;border:0;border-radius:8px;background:rgba(255,255,255,.12);color:#fff;font-size:16px;cursor:pointer}
+@media (max-width:1000px){
+  .milan-hamburger{display:flex;align-items:center;justify-content:center}
+  .milan-mobile-drawer{position:fixed;top:0;left:0;width:280px;max-width:85vw;height:100dvh;background:#0f172a;color:#fff;z-index:9999;transform:translateX(-100%);transition:transform .25s ease;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  body.milan-drawer-open .milan-mobile-drawer{transform:translateX(0)}
+  .milan-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998;opacity:0;pointer-events:none;transition:opacity .25s}
+  body.milan-drawer-open .milan-drawer-overlay{opacity:1;pointer-events:auto}
+  .milan-drawer-nav{display:flex;flex-direction:column;gap:6px}
+  .milan-drawer-nav button{width:100%;text-align:left;padding:12px;border:0;border-radius:10px;background:rgba(255,255,255,.08);color:#fff;font-size:15px;cursor:pointer}
+}
+@media (min-width:1001px){ .milan-mobile-drawer,.milan-drawer-overlay{display:none!important} }
+</style>
+<script>
+(function(){
+  var ham=document.getElementById("milanHamburger");
+  var closeBtn=document.getElementById("milanDrawerClose");
+  var overlay=document.getElementById("milanDrawerOverlay");
+  function openDrawer(){document.body.classList.add("milan-drawer-open")}
+  function closeDrawer(){document.body.classList.remove("milan-drawer-open")}
+  if(ham) ham.addEventListener("click",function(e){e.stopPropagation(); if(document.body.classList.contains("milan-drawer-open")) closeDrawer(); else openDrawer();});
+  if(closeBtn) closeBtn.addEventListener("click",closeDrawer);
+  if(overlay) overlay.addEventListener("click",closeDrawer);
+  document.querySelectorAll(".milan-drawer-nav button").forEach(function(b){
+    b.addEventListener("click",function(){
+      var txt=b.textContent.trim(); closeDrawer();
+      if(txt.indexOf("Upgrade")>=0){window.location.href="/storage-upgrade.html";return;}
+      if(txt==="📝 Post"){window.location.href="/post.html";return;}
+      if(txt.indexOf("Background")>=0){var r=document.documentElement;var n=r.dataset.milanTheme==="dark"?"light":"dark";r.dataset.milanTheme=n;try{localStorage.setItem("milanTheme",n)}catch(e){} return;}
+      if(txt.indexOf("Messages")>=0){var m=document.getElementById("messagesNavBtn"); if(m) m.click(); return;}
+      if(txt.indexOf("Edit Profile")>=0){var e2=document.getElementById("editProfileBtn"); if(e2) e2.click(); return;}
+      if(txt.indexOf("Travel")>=0){var tr=document.getElementById("milanTravelBtn"); if(tr) tr.click(); return;}
+      if(txt.indexOf("Music")>=0){window.location.href="/music.html";return;}
+      var btns=document.querySelectorAll(".leftRail .nav button");
+      for(var i=0;i<btns.length;i++){ if(btns[i].textContent.trim()===txt){btns[i].click(); break;}}
+    });
+  });
+})();
+</script>
+<!--MILAN-NAV-WIRE-START-->
+<script>
+(function(){
+  var PAGES = {"upgrade": "storage-upgrade.html", "music": "music.html", "privacy": "privacy.html", "ai": null, "post": null, "notifications": null, "saved": null};
+  try { if (!localStorage.getItem("milan_token")) { window.location.replace("/"); return; } } catch(e) {}
+  function toast(m){
+    var d = document.createElement("div"); d.textContent = m;
+    d.style.cssText = "position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 16px;border-radius:12px;font-size:13px;z-index:99999;max-width:90vw";
+    document.body.appendChild(d); setTimeout(function(){ d.remove(); }, 2600);
+  }
+  function go(key, label){ if (PAGES[key]) { window.location.href = "/" + PAGES[key]; } else { toast(label + " abhi available nahi hai"); } }
+  function norm(s){ return (s || "").toLowerCase().replace(/[^a-z ]/g, "").replace(/\s+/g, " ").trim(); }
+  function feed(){ var f = document.getElementById("milanHomeFeed"); if (f) f.scrollIntoView({behavior:"smooth", block:"start"}); }
+  function setActive(btn){
+    document.querySelectorAll(".leftRail .nav button").forEach(function(x){ x.classList.remove("active"); });
+    btn.classList.add("active");
+  }
+  var ACTIONS = {
+    "home feed": function(){ feed(); },
+    "my posts": function(){ feed(); },
+    "public feed": function(){ feed(); },
+    "saved": function(){ if (PAGES.saved) go("saved","Saved"); else feed(); },
+    "upgrade storage": function(){ go("upgrade","Upgrade Storage"); },
+    "music": function(){ go("music","Music"); },
+    "notifications": function(){ go("notifications","Notifications"); },
+    "privacy": function(){ go("privacy","Privacy"); },
+    "milan ai": function(){ go("ai","MILAN AI"); },
+    "post": function(){ go("post","Post"); },
+    "background colour": function(){
+      var r = document.documentElement, n = r.dataset.milanTheme === "dark" ? "light" : "dark";
+      r.dataset.milanTheme = n; try { localStorage.setItem("milanTheme", n); } catch(e) {}
+    }
+  };
+  function wire(){
+    document.querySelectorAll(".leftRail .nav button").forEach(function(b){
+      if (b.dataset.nw) return;
+      if (b.getAttribute("onclick")) return;
+      if (b.id && b.id !== "milanTravelBtn") return;
+      if (b.id === "milanTravelBtn") {
+        b.dataset.nw = "1";
+        b.addEventListener("click", function(){
+          setActive(b);
+          var pn = document.getElementById("milanTravelPanel");
+          if (pn) { pn.classList.add("open"); } else { toast("Travel Agent abhi available nahi hai"); }
+        });
+        return;
+      }
+      var fn = ACTIONS[norm(b.textContent)];
+      if (!fn) return;
+      b.dataset.nw = "1";
+      b.addEventListener("click", function(){ setActive(b); fn(); });
+    });
+    var logout = document.getElementById("logoutBtn");
+    if (logout && !logout.dataset.nw) {
+      logout.dataset.nw = "1";
+      logout.addEventListener("click", function(){
+        try { ["milan_token","milan_did","milan_space_id","milan_user"].forEach(function(k){ localStorage.removeItem(k); }); } catch(e) {}
+        window.location.replace("/");
+      });
+    }
+    var logo = document.querySelector(".brand-logo");
+    if (logo && !logo.dataset.nw) {
+      logo.dataset.nw = "1";
+      logo.style.cursor = "pointer";
+      logo.addEventListener("click", function(){ window.scrollTo({top:0, behavior:"smooth"}); });
+      logo.addEventListener("keydown", function(e){ if (e.key === "Enter") window.scrollTo({top:0, behavior:"smooth"}); });
+    }
+    var bell = document.querySelector(".icon-btn[title=Notifications]");
+    if (bell && !bell.dataset.nw) { bell.dataset.nw = "1"; bell.addEventListener("click", function(){ go("notifications","Notifications"); }); }
+    var mus = document.querySelector(".icon-btn[title=Music]");
+    if (mus && !mus.dataset.nw) { mus.dataset.nw = "1"; mus.addEventListener("click", function(){ go("music","Music"); }); }
+  }
+  wire(); setTimeout(wire, 800); setTimeout(wire, 2500);
+})();
+</script>
+<!--MILAN-NAV-WIRE-END-->
+<style id="milan-structure-fix">
+/* ===== 1. VARIABLES ===== */
+:root{ --milan-gap:16px; --milan-radius:16px; --milan-top:78px; }
+/* ===== 2. RESET / BASE ===== */
+*{box-sizing:border-box}
+body{margin:0}
+/* ===== 3. TOPBAR - sahi jagah: hamburger | logo | search | actions ===== */
+.topbar{display:flex!important;align-items:center!important;gap:12px!important}
+.milan-hamburger{order:1!important}
+.topbar .brand{order:2!important;display:flex!important;align-items:center!important;gap:10px!important}
+.topbar .search{order:3!important;flex:1!important;min-width:0!important}
+.topbar .top-actions{order:4!important;display:flex!important;gap:6px!important}
+/* ===== 4. LAYOUT - sahi jagah: left | center | right ===== */
+.layout{display:grid!important;grid-template-columns:280px minmax(0,1fr) 320px!important;gap:var(--milan-gap)!important;max-width:1280px!important;margin:0 auto!important;padding:16px!important;align-items:start!important}
+.leftRail{order:1!important;position:sticky!important;top:var(--milan-top)!important;display:flex!important;flex-direction:column!important;gap:12px!important}
+.centerRail{order:2!important;min-width:0!important;display:flex!important;flex-direction:column!important;gap:16px!important}
+.rightRail{order:3!important;position:sticky!important;top:var(--milan-top)!important;display:flex!important;flex-direction:column!important;gap:12px!important}
+/* ===== 5. LEFT - sahi jagah: profile upar, nav neeche ===== */
+.leftRail .profile{order:1!important}
+.leftRail .nav{order:2!important;display:flex!important;flex-direction:column!important;gap:6px!important}
+/* ===== 6. CENTER - sahi jagah: composer upar, feed neeche ===== */
+.centerRail .composer{order:1!important}
+.centerRail #milanHomeFeed{order:2!important}
+/* ===== 7. RIGHT - sahi jagah: cards stack ===== */
+.rightRail .right-card{order:1!important}
+/* ===== 8. COMPONENTS ===== */
+.card{border-radius:var(--milan-radius)!important}
+.nav button{width:100%!important;text-align:left!important}
+.composer textarea{width:100%!important}
+/* ===== 9. MOBILE - sahi jagah ===== */
+@media (max-width:1000px){
+  .layout{grid-template-columns:minmax(0,1fr)!important}
+  .leftRail,.rightRail{display:none!important}
+  .topbar .search{display:none!important}
+}
+@media (min-width:1001px){ .milan-mobile-drawer,.milan-drawer-overlay{display:none!important} }
+@media (max-width:1000px){
+  .topbar{display:flex!important;align-items:center!important;flex-wrap:nowrap!important;gap:8px}
+  .topbar .brand{flex:0 1 auto;min-width:0}
+  .topbar .search{flex:1 1 auto;min-width:0}
+  .topbar #milanHamburger{order:99!important;margin-left:auto!important;margin-right:-6px!important;justify-content:flex-end!important;flex:0 0 44px}
+  #milan-burger,#milan-drawer,#milan-drawer-ov,#milan-burger-v81,#milan-drawer-v81{display:none!important}
+  html body header.topbar{padding-right:6px!important;padding-left:12px!important;justify-content:flex-start!important;align-items:center!important}
+  html body header.topbar{width:100%!important;max-width:none!important;margin:0!important;left:0!important;right:0!important;top:0!important;border-radius:0!important;box-sizing:border-box!important}
+  html body header.topbar #milanHamburger{position:static!important;inset:auto!important;transform:none!important;order:99!important;margin:0 6px 0 auto!important;width:44px!important;height:44px!important;flex:0 0 44px!important;display:flex!important;align-items:center!important;align-self:center!important;justify-content:center!important;line-height:1!important;padding:0!important}
+}
+
+/* center the 'Loading people...' / empty state */
+#peopleConnectList:not(:has(.person)),
+#peopleConnectList.empty,
+#peopleList:not(:has(.person)),
+#peopleList.empty{display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
+</style>
+<style id="milan-pwa-scroll-fix">
+html:root:root{height:auto!important;min-height:100%!important;overflow:visible!important;position:static!important;overscroll-behavior-y:auto!important}
+html:root:root body:not(.zz){height:auto!important;min-height:100vh!important;min-height:100dvh!important;overflow-x:hidden!important;overflow-y:auto!important;position:static!important;-webkit-overflow-scrolling:touch}
+html:root:root body:not(.zz) #appView,html:root:root body:not(.zz) .app{height:auto!important;min-height:100dvh!important;overflow:visible!important}
+html:root:root body:not(.zz).milan-drawer-open,html:root:root body:not(.zz).milan-mobile-menu-open{overflow:hidden!important}
+</style>
+<script id="milan-people-center-js">
+(function(){
+  var box=null, props=["display","flex-direction","align-items","justify-content","text-align"];
+  function q(x){return document.querySelector(x)}
+  function apply(b){
+    b.style.setProperty("display","flex","important");
+    b.style.setProperty("flex-direction","column","important");
+    b.style.setProperty("align-items","center","important");
+    b.style.setProperty("justify-content","center","important");
+    b.style.setProperty("text-align","center","important");
+  }
+  function clear(b){props.forEach(function(k){b.style.removeProperty(k)})}
+  function findLoading(){
+    var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null), n;
+    while((n=w.nextNode())){
+      if(/^\s*Loading people/i.test(n.nodeValue||"")){
+        var el=n.parentElement;
+        if(!el || el.closest("script,style")) continue;
+        return el;
+      }
+    }
+    return null;
+  }
+  function pickBox(el){
+    var cur=el;
+    for(var i=0;i<4 && cur && cur!==document.body;i++){
+      var cs=getComputedStyle(cur);
+      if(cs.borderTopStyle==="dashed" || (cs.borderStyle||"").indexOf("dashed")>=0) return cur;
+      cur=cur.parentElement;
+    }
+    return el;
+  }
+  function update(){
+    if(!box || !document.contains(box)){
+      var el=findLoading();
+      if(el){ box=pickBox(el); watch(); }
+    }
+    if(box){
+      if(box.querySelector(".person")) clear(box); else apply(box);
+    }
+    ["#peopleConnectList","#peopleList"].forEach(function(id){
+      var l=q(id); if(!l) return;
+      if(l.querySelector(".person")) clear(l);
+      else if(l.children.length===0 || l.querySelector(".empty") || /loading/i.test(l.textContent||"")) apply(l);
+    });
+  }
+  var watching=false;
+  function watch(){
+    if(watching || !box || !window.MutationObserver) return;
+    watching=true;
+    new MutationObserver(update).observe(box,{childList:true,subtree:true,characterData:true});
+  }
+  update();
+  document.addEventListener("DOMContentLoaded",update);
+  window.addEventListener("load",update);
+  setInterval(update,1200);
+})();
+</script>
+<script id="milan-structure-js">
+(function(){
+  // DOM check - component sahi jagah hai ya nahi
+  function check(sel, place){ var el=document.querySelector(sel); if(!el){ console.warn("MILAN missing:", sel, "->", place); } }
+  check(".topbar .brand", "topbar-left");
+  check(".topbar .search", "topbar-center");
+  check(".topbar .top-actions", "topbar-right");
+  check(".layout .leftRail", "layout-left");
+  check(".layout .centerRail", "layout-center");
+  check(".layout .rightRail", "layout-right");
+  check(".leftRail .profile", "left-top");
+  check(".leftRail .nav", "left-bottom");
+  check(".centerRail .composer", "center-top");
+  check(".centerRail #milanHomeFeed", "center-bottom");
+  // topbar ka order fix - DOM me bhi sahi jagah
+  var topbar=document.querySelector(".topbar");
+  if(topbar){
+    var ham=document.getElementById("milanHamburger");
+    var brand=topbar.querySelector(".brand");
+    var search=topbar.querySelector(".search");
+    var actions=topbar.querySelector(".top-actions");
+    if(ham) topbar.prepend(ham);
+    if(brand && ham) ham.after(brand);
+    if(search && brand) brand.after(search);
+    if(actions && search) search.after(actions);
+  }
+  // layout ka order fix
+  var layout=document.querySelector(".layout");
+  if(layout){
+    var left=layout.querySelector(".leftRail");
+    var center=layout.querySelector(".centerRail");
+    var right=layout.querySelector(".rightRail");
+    if(left) layout.prepend(left);
+    if(center && left) left.after(center);
+    if(right && center) center.after(right);
+  }
+})();
+</script>
+<script id="milan-hscroll-fix">
+(function(){
+var seen=0;
+function fix(){var b=document.body,d=document.documentElement,a=document.querySelector('.app');
+seen=Math.max(seen,b.scrollLeft||0,d.scrollLeft||0,a?a.scrollLeft||0:0);
+if(b.scrollLeft)b.scrollLeft=0;if(d.scrollLeft)d.scrollLeft=0;if(a&&a.scrollLeft)a.scrollLeft=0;}
+document.addEventListener('scroll',fix,true);
+window.addEventListener('resize',fix);
+document.addEventListener('focusin',function(){setTimeout(fix,0)},true);
+fix();
+})();
+</script>
+<script id="milan-semhint-js">
+(function(){function tag(){try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);var n;while((n=w.nextNode())){if(/Semantic search/i.test(n.nodeValue||"")&&n.parentElement&&n.parentElement.tagName!=="SCRIPT"&&n.parentElement.tagName!=="STYLE"){var p=n.parentElement;if(!p.querySelector("input,textarea")){p.classList.add("milan-semhint");return}}}}catch(e){}}
+document.addEventListener("DOMContentLoaded",tag);setTimeout(tag,1500);setTimeout(tag,4000);})();
+</script>
+<script id="milan-desktop-js">
+(function(){
+var mq=window.matchMedia('(min-width:1001px)'),wide=window.matchMedia('(min-width:781px)'),d=null,home=null;
+function rail(){return document.querySelector('aside.leftRail');}
+function place(){
+  var r=rail();d=d||document.getElementById('milanMobileDrawer');
+  if(!r||!d)return;
+  if(!home){home=document.createComment('milan-drawer-home');if(d.parentNode)d.parentNode.insertBefore(home,d);}
+  if(mq.matches){
+    if(d.parentNode!==r)r.insertBefore(d,r.firstChild);
+    document.body.classList.add('milan-desk-menu');
+  }else{
+    if(d.parentNode===r&&home.parentNode)home.parentNode.insertBefore(d,home.nextSibling);
+    document.body.classList.remove('milan-desk-menu');
+  }
+}
+function hideG(){
+  var t=document.querySelectorAll('.gamify-title');
+  for(var i=0;i<t.length;i++){
+    if(/Your MILAN Space/i.test(t[i].textContent||'')){
+      var w=t[i].parentElement;
+      if(w&&w!==document.body)w.style.setProperty('display','none','important');
+    }
+  }
+}
+function unlock(){
+  if(!wide.matches)return;
+  var l=document.querySelector('main.layout');if(!l)return;
+  var list=[],e=l,c=document.querySelector('.centerRail');
+  while(e&&e!==document.body&&e!==document.documentElement){list.push(e);e=e.parentElement;}
+  if(c)list.push(c);
+  list.forEach(function(x){
+    var cs=getComputedStyle(x);
+    if(cs.overflowY!=='visible'||cs.overflowX!=='visible'){
+      x.style.setProperty('overflow','visible','important');
+      if(x.scrollHeight>x.clientHeight+2){x.style.setProperty('height','auto','important');x.style.setProperty('max-height','none','important');}
+    }
+  });
+  var H=document.documentElement,B=document.body;
+  H.style.setProperty('overflow-y','auto','important');H.style.setProperty('height','auto','important');
+  B.style.setProperty('overflow-y','auto','important');B.style.setProperty('height','auto','important');B.style.setProperty('max-height','none','important');
+}
+function run(){place();hideG();unlock();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+setTimeout(run,1500);setTimeout(run,4000);
+window.addEventListener('resize',run);
+var r0=rail();
+if(r0&&window.MutationObserver)new MutationObserver(function(){place();hideG();}).observe(r0,{childList:true});
+if(/[?&]dbg=1/.test(location.search)){
+  setTimeout(function(){
+    function o(s){var e=document.querySelector(s);if(!e)return s+': none';var c=getComputedStyle(e);return s+' oy:'+c.overflowY+' h:'+c.height+' pos:'+c.position;}
+    var se=document.scrollingElement||document.documentElement,L=rail();
+    var p=document.createElement('pre');
+    p.style.cssText='position:fixed;left:0;right:0;bottom:0;margin:0;padding:6px;background:#000;color:#0f0;font:11px/1.3 monospace;z-index:99999;white-space:pre-wrap';
+    p.textContent=['iw='+innerWidth+' ih='+innerHeight+' scrollH='+se.scrollHeight+' clientH='+se.clientHeight,o('html'),o('body'),o('.app'),o('main.layout'),o('.centerRail'),o('aside.leftRail'),'drawer parent: '+(d&&d.parentNode?d.parentNode.tagName+'.'+d.parentNode.className:'none')].join('\n');
+    document.body.appendChild(p);
+  },2500);
+}
+})();
+</script>
+<script id="milan-dp-remove-js">
+(function(){
+var BID='mdpAvatarRemove';
+function addCss(){
+  if(document.getElementById('milan-dp-remove-css'))return;
+  var s=document.createElement('style');s.id='milan-dp-remove-css';
+  s.textContent='#'+BID+'{position:absolute;top:-3px;right:-3px;width:26px;height:26px;border-radius:50%;border:2px solid #0f172a;background:#ef4444;color:#fff;-webkit-text-fill-color:#fff;font-size:14px;font-weight:800;line-height:1;display:none;align-items:center;justify-content:center;padding:0;margin:0;cursor:pointer;z-index:5;box-sizing:border-box}'
+  +'#'+BID+'.show{display:flex}'
+  +'#milanDpModal{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100000;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}'
+  +'#milanDpModal .box{width:min(340px,100%);background:#111827;color:#fff;border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.6);text-align:center;font-family:inherit}'
+  +'#milanDpModal h4{margin:0 0 8px;font-size:17px;font-weight:800}'
+  +'#milanDpModal p{margin:0 0 16px;font-size:13px;color:#a5b4cf;line-height:1.4}'
+  +'#milanDpModal .row{display:flex;gap:10px}'
+  +'#milanDpModal button{flex:1;padding:11px 8px;border-radius:12px;border:1px solid rgba(255,255,255,.18);font-size:14px;font-weight:700;cursor:pointer;color:#fff;background:rgba(255,255,255,.08)}'
+  +'#milanDpModal button.yes{background:#ef4444;border-color:#ef4444}'
+  +'#milanDpModal button:disabled{opacity:.6;cursor:default}'
+  +'#milanDpModal .err{color:#fca5a5;font-size:12px;margin-top:10px}';
+  document.head.appendChild(s);
+}
+function token(){try{return localStorage.getItem('milan_token')||'';}catch(e){return '';}}
+function closeModal(){var m=document.getElementById('milanDpModal');if(m)m.remove();}
+function openModal(){
+  if(document.getElementById('milanDpModal'))return;
+  var m=document.createElement('div');m.id='milanDpModal';
+  m.innerHTML='<div class="box"><h4>Remove your DP?</h4><p>Your profile photo will be deleted from your DWN storage. You can upload a new one anytime.</p><div class="row"><button type="button" class="no">Cancel</button><button type="button" class="yes">Yes, remove</button></div><div class="err"></div></div>';
+  document.body.appendChild(m);
+  m.addEventListener('click',function(e){if(e.target===m)closeModal();});
+  m.querySelector('.no').onclick=closeModal;
+  var yes=m.querySelector('.yes'),err=m.querySelector('.err');
+  yes.onclick=function(){
+    var t=token();
+    if(!t){err.textContent='Please sign in again.';return;}
+    yes.disabled=true;yes.textContent='Removing...';err.textContent='';
+    fetch('/api/profile/avatar',{method:'DELETE',headers:{Authorization:'Bearer '+t,Accept:'application/json'},cache:'no-store'})
+    .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json().catch(function(){return {};});})
+    .then(function(){
+      try{localStorage.removeItem('milanAvatar');}catch(e){}
+      window.__milanPersistentAvatar='';
+      location.reload();
+    })
+    .catch(function(e){yes.disabled=false;yes.textContent='Yes, remove';err.textContent='Could not remove DP: '+(e&&e.message||e);});
+  };
+}
+function toggle(){
+  var b=document.getElementById(BID),av=document.getElementById('mdpAvatar');
+  if(!b||!av)return;
+  if(av.querySelector('img'))b.classList.add('show');else b.classList.remove('show');
+}
+function setup(){
+  var av=document.getElementById('mdpAvatar');
+  if(!av)return;
+  var label=av.closest('.mdp-av')||av.parentElement;
+  if(!label)return;
+  addCss();
+  if(!document.getElementById(BID)){
+    var b=document.createElement('button');
+    b.type='button';b.id=BID;b.title='Remove profile photo';b.setAttribute('aria-label','Remove profile photo');b.textContent='\u2715';
+    b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();openModal();});
+    label.appendChild(b);
+  }
+  if(!av.__dpObs&&window.MutationObserver){
+    av.__dpObs=new MutationObserver(toggle);
+    av.__dpObs.observe(av,{childList:true,subtree:true,attributes:true});
+  }
+  toggle();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+setTimeout(setup,1500);setTimeout(setup,4000);
+})();
+</script>
+
+
+<style id="milan-people-connect">
+#peopleConnectList.milan-people-list{
+  display:flex!important; flex-direction:column!important; gap:10px;
+  align-items:stretch!important; justify-content:flex-start!important;
+  text-align:left!important;
+}
+#peopleConnectList .milan-person{
+  display:flex; align-items:center; gap:9px; min-width:0;
+  padding:8px 0; border-bottom:1px solid rgba(148,163,184,.15);
+}
+#peopleConnectList .milan-person:last-child{border-bottom:0}
+#peopleConnectList .milan-person-avatar{
+  width:38px; height:38px; border-radius:50%; flex:0 0 38px;
+  overflow:hidden; display:grid; place-items:center;
+  background:linear-gradient(135deg,#7c3aed,#06b6d4); color:#fff;
+  font-size:13px; font-weight:800;
+}
+#peopleConnectList .milan-person-avatar img{
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+#peopleConnectList .milan-person-info{min-width:0; flex:1}
+#peopleConnectList .milan-person-name{
+  display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  font-size:13px; font-weight:700;
+}
+#peopleConnectList .milan-person-did{
+  display:inline-flex; align-items:center; gap:4px; max-width:100%;
+  margin-top:3px; padding:2px 6px; border-radius:999px;
+  color:#a5b4fc; background:rgba(99,102,241,.14); font-size:10px;
+  overflow:hidden; white-space:nowrap; text-overflow:ellipsis;
+}
+#peopleConnectList .milan-follow-btn{
+  flex:0 0 auto; border:0; border-radius:8px; padding:6px 9px;
+  background:#6366f1; color:#fff; font-size:11px; font-weight:800; cursor:pointer;
+}
+#peopleConnectList .milan-follow-btn:hover:not(:disabled){background:#4f46e5}
+#peopleConnectList .milan-follow-btn:disabled{
+  cursor:default; opacity:.72; background:rgba(100,116,139,.55);
+}
+</style>
+
+<script id="milan-people-connect-js">
+(function () {
+  "use strict";
+
+  var list = document.getElementById("peopleConnectList");
+  if (!list) return;
+
+  function jwtFrom(value) {
+    if (typeof value === "string") {
+      var text = value.trim().replace(/^Bearer\s+/i, "");
+      if (/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(text)) return text;
+      try { return jwtFrom(JSON.parse(value)); } catch (_) { return ""; }
+    }
+    if (value && typeof value === "object") {
+      var keys = ["token", "accessToken", "access_token", "jwt", "idToken", "id_token"];
+      for (var i = 0; i < keys.length; i++) {
+        var found = jwtFrom(value[keys[i]]);
+        if (found) return found;
+      }
+    }
+    return "";
+  }
+
+  function authToken() {
+    var direct = [window.milanToken, window.authToken, window.accessToken, window.token];
+    for (var i = 0; i < direct.length; i++) {
+      var fromWindow = jwtFrom(direct[i]);
+      if (fromWindow) return fromWindow;
+    }
+    var stores = [window.localStorage, window.sessionStorage];
+    for (var s = 0; s < stores.length; s++) {
+      try {
+        for (var j = 0; j < stores[s].length; j++) {
+          var fromStore = jwtFrom(stores[s].getItem(stores[s].key(j)));
+          if (fromStore) return fromStore;
+        }
+      } catch (_) {}
+    }
+    return "";
+  }
+
+  function headers(json) {
+    var h = {};
+    var token = authToken();
+    if (token) h.Authorization = "Bearer " + token;
+    if (json) h["Content-Type"] = "application/json";
+    return h;
+  }
+
+  function initials(name) {
+    return String(name || "M").trim().split(/\s+/).slice(0, 2)
+      .map(function (word) { return word.charAt(0); }).join("").toUpperCase() || "M";
+  }
+
+  function shortDid(did) {
+    did = String(did || "");
+    return did.length > 22 ? did.slice(0, 12) + "…" + did.slice(-6) : did;
+  }
+
+  function buttonLabel(status) {
+    if (status === "friends") return "Following";
+    if (status === "sent") return "Requested";
+    if (status === "received") return "Follow back";
+    return "Follow";
+  }
+
+  function canFollow(status) {
+    return status === "none" || status === "received";
+  }
+
+  function message(text) {
+    list.className = "empty";
+    list.textContent = text;
+  }
+
+  async function follow(person, button) {
+    var original = button.textContent;
+    button.disabled = true;
+    button.textContent = "Sending…";
+
+    try {
+      var response = await fetch("/api/connections", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: headers(true),
+        body: JSON.stringify({ toDid: person.did })
+      });
+      var data = await response.json().catch(function () { return {}; });
+      if (!response.ok) throw new Error(data.error || "Could not follow this user.");
+
+      person.connectionStatus = data.status === "accepted" ? "friends" : "sent";
+      button.textContent = buttonLabel(person.connectionStatus);
+      button.disabled = true;
+    } catch (error) {
+      button.textContent = original;
+      button.disabled = false;
+      alert(error.message || "Could not follow this user.");
+    }
+  }
+
+  function render(people) {
+    list.className = "milan-people-list";
+    var fragment = document.createDocumentFragment();
+
+    people.forEach(function (person) {
+      var row = document.createElement("article");
+      row.className = "milan-person";
+
+      var avatar = document.createElement("div");
+      avatar.className = "milan-person-avatar";
+      var fallback = document.createElement("span");
+      fallback.textContent = initials(person.name);
+      avatar.appendChild(fallback);
+
+      if (person.avatar) {
+        var image = document.createElement("img");
+        image.src = person.avatar;
+        image.alt = (person.name || "User") + " profile photo";
+        image.addEventListener("load", function () { fallback.hidden = true; });
+        image.addEventListener("error", function () { image.remove(); fallback.hidden = false; });
+        avatar.prepend(image);
+      }
+
+      var info = document.createElement("div");
+      info.className = "milan-person-info";
+
+      var name = document.createElement("span");
+      name.className = "milan-person-name";
+      name.textContent = person.name || "MILAN user";
+
+      var did = document.createElement("span");
+      did.className = "milan-person-did";
+      did.title = person.did || "";
+      did.textContent = "◈ " + shortDid(person.did);
+
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "milan-follow-btn";
+      button.textContent = buttonLabel(person.connectionStatus);
+      button.disabled = !canFollow(person.connectionStatus);
+      if (!button.disabled) {
+        button.addEventListener("click", function () { follow(person, button); });
+      }
+
+      info.appendChild(name);
+      info.appendChild(did);
+      row.appendChild(avatar);
+      row.appendChild(info);
+      row.appendChild(button);
+      fragment.appendChild(row);
+    });
+
+    list.replaceChildren(fragment);
+  }
+
+  async function loadPeople() {
+    message("Loading people…");
+    try {
+      var response = await fetch("/api/social/people", {
+        credentials: "same-origin",
+        cache: "no-store",
+        headers: headers(false)
+      });
+      var people = await response.json().catch(function () { return null; });
+      if (!response.ok) throw new Error((people && people.error) || "Could not load people.");
+      if (!Array.isArray(people) || !people.length) {
+        message("No other people to connect with yet.");
+        return;
+      }
+      render(people);
+    } catch (error) {
+      message(error.message || "Could not load people.");
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", loadPeople, { once: true });
+  } else {
+    loadPeople();
+  }
+})();
+</script>
+
+</body>
+</html>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  const center=document.querySelector(".centerRail") || document.querySelector("main.layout > section") || document.querySelector(".main");
+  if(!center || document.getElementById("milanHomeIntro")) return;
+
+  const wrap=document.createElement("div");
+  wrap.id="milanHomeIntro";
+  wrap.innerHTML=`
+    <div class="heroIntro">
+      <div>
+        <h1>Welcome back to MILAN</h1>
+        <p>Your people, your data, your space.</p>
+      </div>
+    </div>
+    <div class="quickStats">
+      <div class="quickStat"><div class="k">People</div><div class="v" id="uiPeopleCount">0</div></div>
+      <div class="quickStat"><div class="k">Visible posts</div><div class="v" id="uiPostCount">0</div></div>
+      <div class="quickStat"><div class="k">Privacy</div><div class="v" id="uiPrivacyScore">—</div></div>
+    </div>
+  `;
+
+  center.prepend(wrap);
+
+  const sync=()=>{
+    const p=document.getElementById("peopleCount");
+    const posts=document.getElementById("postCount");
+    const privacy=document.getElementById("privacyScore");
+    const a=document.getElementById("uiPeopleCount");
+    const b=document.getElementById("uiPostCount");
+    const c=document.getElementById("uiPrivacyScore");
+    if(a && p) a.textContent=p.textContent;
+    if(b && posts) b.textContent=posts.textContent;
+    if(c && privacy) c.textContent=privacy.textContent || "—";
+  };
+
+  sync();
+  setInterval(sync,1500);
+});
+</script>
+
+
+
+<script>
+(function(){
+  if(window.__milanControlCenterV1) return;
+  window.__milanControlCenterV1=true;
+
+  function escLocal(v){
+    return String(v??"").replace(/[&<>"']/g,m=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[m]));
+  }
+
+  function makeUI(){
+    if(document.getElementById("milanControlFab")) return;
+
+    const fab=document.createElement("button");
+    fab.id="milanControlFab";
+    fab.type="button";
+    fab.textContent="⚙️ Control Center";
+
+    const overlay=document.createElement("div");
+    overlay.id="milanControlOverlay";
+    overlay.innerHTML=`
+      <section id="milanControlPanel" role="dialog" aria-modal="true" aria-labelledby="mccTitle">
+        <div id="milanControlHead">
+          <h2 id="mccTitle">MILAN Control Center</h2>
+          <button id="milanControlClose" type="button" aria-label="Close">✕</button>
+        </div>
+        <div id="milanControlBody">
+          <div class="mcc-grid">
+
+            <article class="mcc-card">
+              <h3>🟢 System Health</h3>
+              <div class="mcc-muted">Live application and DWN service health.</div>
+              <div class="mcc-status"><span class="mcc-dot" id="mccHealthDot"></span><span id="mccHealthText">Checking…</span></div>
+              <div class="mcc-actions">
+                <button class="primary" id="mccHealthBtn">Refresh Health</button>
+              </div>
+            </article>
+
+            <article class="mcc-card">
+              <h3>🔄 Data Refresh</h3>
+              <div class="mcc-muted">Refresh the current live views using the existing backend APIs.</div>
+              <div class="mcc-status"><span class="mcc-dot" id="mccSyncDot"></span><span id="mccSyncText">Ready</span></div>
+              <div class="mcc-actions">
+                <button class="primary" id="mccSyncBtn">Sync View Now</button>
+                <button id="mccRefreshBtn">Refresh Everything</button>
+              </div>
+            </article>
+
+            <article class="mcc-card">
+              <h3>🔐 Privacy & Access</h3>
+              <div class="mcc-muted">Manage post visibility and selected-DID access.</div>
+              <div class="mcc-actions">
+                <button class="primary" id="mccPrivacyBtn">Open Privacy Center</button>
+                <button id="mccSavedBtn">Saved Posts</button>
+              </div>
+            </article>
+
+            <article class="mcc-card">
+              <h3>👥 Connections</h3>
+              <div class="mcc-muted">People, connection requests and relationship state.</div>
+              <div class="mcc-actions">
+                <button class="primary" id="mccPeopleBtn">Open People</button>
+                <button id="mccRequestsBtn">View Requests</button>
+              </div>
+            </article>
+
+            <article class="mcc-card wide">
+              <h3>🗂️ My Data & Records</h3>
+              <div class="mcc-muted">Quick access to your posts and record actions.</div>
+              <div class="mcc-actions">
+                <button class="primary" id="mccMineBtn">My Posts</button>
+                <button id="mccAllBtn">Home Feed</button>
+                <button id="mccPublicBtn">Public Feed</button>
+              </div>
+              <div class="mcc-list" id="mccRecords"></div>
+            </article>
+
+            <article class="mcc-card">
+              <h3>📊 Account Activity</h3>
+              <div class="mcc-list">
+                <div class="mcc-row"><span>People</span><span id="mccPeopleCount">0</span></div>
+                <div class="mcc-row"><span>Visible posts</span><span id="mccPostCount">0</span></div>
+                <div class="mcc-row"><span>Requests</span><span id="mccRequestCount">0</span></div>
+                <div class="mcc-row"><span>Unread alerts</span><span id="mccNotifCount">0</span></div>
+              </div>
+            </article>
+
+            <article class="mcc-card">
+              <h3>👤 Profile & Identity</h3>
+              <div class="mcc-muted">Profile, DID and identity controls.</div>
+              <div class="mcc-actions">
+                <button class="primary" id="mccProfileBtn">Edit Profile</button>
+                <button id="mccDidBtn">Copy DID</button>
+              </div>
+            </article>
+
+          </div>
+          <div id="mccResult"></div>
+        </div>
+      </section>
+    `;
+
+    document.body.appendChild(fab);
+    document.body.appendChild(overlay);
+
+    const close=()=>overlay.classList.remove("open");
+    fab.onclick=()=>{overlay.classList.add("open");mccRefresh();};
+    document.getElementById("milanControlClose").onclick=close;
+    overlay.addEventListener("click",e=>{if(e.target===overlay)close();});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape")close();});
+
+    document.getElementById("mccHealthBtn").onclick=checkHealth;
+    document.getElementById("mccSyncBtn").onclick=syncView;
+    document.getElementById("mccRefreshBtn").onclick=refreshEverything;
+
+    document.getElementById("mccPrivacyBtn").onclick=()=>{
+      close();
+      if(typeof openPrivacyCenter==="function") openPrivacyCenter();
+    };
+    document.getElementById("mccSavedBtn").onclick=()=>{
+      close();
+      const b=document.querySelector('[data-scope="saved"]');
+      if(b)b.click();
+    };
+    document.getElementById("mccPeopleBtn").onclick=()=>{
+      close();
+      const b=document.querySelector('[data-scope="friends"]');
+      if(b)b.click();
+      else if(typeof loadPeople==="function")loadPeople();
+    };
+    document.getElementById("mccRequestsBtn").onclick=()=>{
+      close();
+      const b=document.querySelector('[data-scope="friends"]');
+      if(b)b.click();
+    };
+    document.getElementById("mccMineBtn").onclick=()=>{
+      close();
+      const b=document.querySelector('[data-scope="mine"]');
+      if(b)b.click();
+    };
+    document.getElementById("mccAllBtn").onclick=()=>{
+      close();
+      const b=document.querySelector('[data-scope="all"]');
+      if(b)b.click();
+    };
+    document.getElementById("mccPublicBtn").onclick=()=>{
+      close();
+      const b=document.querySelector('[data-scope="public"]');
+      if(b)b.click();
+    };
+    document.getElementById("mccProfileBtn").onclick=()=>{
+      close();
+      if(typeof openProfile==="function")openProfile();
+      else document.getElementById("profileBtn")?.click();
+    };
+    document.getElementById("mccDidBtn").onclick=()=>{
+      if(typeof copyText==="function"){
+        const did=document.getElementById("myDid")?.textContent||"";
+        copyText(did);
+        showResult("DID copied.");
+      }
+    };
+  }
+
+  async function checkHealth(){
+    const dot=document.getElementById("mccHealthDot");
+    const text=document.getElementById("mccHealthText");
+    if(!dot||!text)return;
+    text.textContent="Checking…";
+    dot.className="mcc-dot warn";
+    try{
+      const r=await fetch("/api/health",{credentials:"same-origin",cache:"no-store"});
+      if(!r.ok)throw new Error("HTTP "+r.status);
+      const d=await r.json();
+      const dwn=d.dwn||{};
+      const good=d.ok!==false && dwn.ok!==false && dwn.storageOperational!==false;
+      dot.className="mcc-dot "+(good?"":"bad");
+      text.textContent=good
+        ?"API + DWN healthy"
+        :"Health response needs attention";
+      showResult(
+        "Health: "+(good?"OK":"Attention")+
+        " · DWN: "+(dwn.ok===false?"problem":"ok")+
+        " · Storage: "+(dwn.storageOperational===false?"problem":"ok")
+      );
+    }catch(e){
+      dot.className="mcc-dot bad";
+      text.textContent="Health check failed";
+      showResult("Health check error: "+e.message);
+    }
+  }
+
+  async function syncView(){
+    const dot=document.getElementById("mccSyncDot");
+    const text=document.getElementById("mccSyncText");
+    if(!dot||!text)return;
+    dot.className="mcc-dot warn";
+    text.textContent="Refreshing…";
+    try{
+      const tasks=[];
+      if(typeof loadFeed==="function")tasks.push(loadFeed());
+      if(typeof loadSummary==="function")tasks.push(loadSummary());
+      if(typeof loadPeople==="function")tasks.push(loadPeople());
+      if(typeof loadNotifications==="function")tasks.push(loadNotifications());
+      await Promise.allSettled(tasks);
+      dot.className="mcc-dot";
+      text.textContent="View refreshed";
+      mccUpdate();
+      showResult("Live feed, summary, people and notifications refreshed.");
+    }catch(e){
+      dot.className="mcc-dot bad";
+      text.textContent="Refresh failed";
+      showResult("Refresh error: "+e.message);
+    }
+  }
+
+  async function refreshEverything(){
+    await checkHealth();
+    await syncView();
+  }
+
+  function mccUpdate(){
+    const map=[
+      ["peopleCount","mccPeopleCount"],
+      ["postCount","mccPostCount"],
+      ["requestCount","mccRequestCount"],
+      ["notifCount","mccNotifCount"]
+    ];
+    map.forEach(([a,b])=>{
+      const x=document.getElementById(a),y=document.getElementById(b);
+      if(x&&y)y.textContent=x.textContent||"0";
+    });
+
+    const records=document.getElementById("mccRecords");
+    if(records && Array.isArray(window.currentFeed)){
+      const rows=window.currentFeed.slice(0,6);
+      records.innerHTML=rows.length
+        ?rows.map(r=>`
+          <div class="mcc-row">
+            <span>${escLocal(r.title||"Untitled record")}</span>
+            <span>${escLocal(r.accessMode||"private")}</span>
+          </div>
+        `).join("")
+        :'<div class="mcc-muted">No records loaded in the current feed.</div>';
+    }
+  }
+
+  function showResult(msg){
+    const box=document.getElementById("mccResult");
+    if(!box)return;
+    box.style.display="block";
+    box.textContent=msg;
+    clearTimeout(window.__mccResultTimer);
+    window.__mccResultTimer=setTimeout(()=>box.style.display="none",5000);
+  }
+
+  function mccRefresh(){
+    mccUpdate();
+    checkHealth();
+  }
+
+  document.addEventListener("DOMContentLoaded",makeUI,{once:true});
+  setTimeout(makeUI,1500);
+  setInterval(()=>{if(document.getElementById("milanControlOverlay")?.classList.contains("open"))mccUpdate()},2000);
+})();
+</script>
+
+
+<style>
+/* MOBILE PEOPLE / CONNECTION REQUESTS */
+@media (max-width:760px){
+  .layout .rightRail{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+  }
+  .layout .rightbar{
+    display:flex !important;
+    width:100% !important;
+  }
+  #peopleConnectCard{
+    width:100% !important;
+  }
+}
+</style>
