@@ -773,6 +773,7 @@ app.post(["/auth/reset-password", "/api/auth/reset-password"], async function (r
 });
 
 require("./milan_follow.js")(app, pool, authFromReq, dwnSpaceDir, path, fs);
+require("./milan_posts.js")(app, pool, dwnSpaceDir, path, fs, checkQuota);
 app.get("*", (req, res) => {
   var f = path.join(__dirname, "../../frontend", req.path === "/" ? "index.html" : req.path);
   if (!fs.existsSync(f) && fs.existsSync(f + ".html")) f = f + ".html";
